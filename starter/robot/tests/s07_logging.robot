@@ -11,7 +11,7 @@ Test Setup          Reset Vehicle Bench
 
 
 *** Test Cases ***
-Lock Command Is Traceable Across All Nodes
+Lock Command Is Traceable Across All Nodes (req:REQ-LOG-001)
     [Tags]    req:REQ-LOG-001
 
     ${resp}=    Send Lock Command
@@ -25,7 +25,7 @@ Lock Command Is Traceable Across All Nodes
     ...    LOCK
 
 
-Climate Command Is Traceable Across All Nodes
+Climate Command Is Traceable Across All Nodes (req:REQ-LOG-001)
     [Tags]    req:REQ-LOG-001
 
     ${resp}=    Send Start Climate Command    target_temp=21.5
@@ -39,7 +39,7 @@ Climate Command Is Traceable Across All Nodes
     ...    CLIMATE_START
 
 
-Charging Command Is Traceable Across All Nodes
+Charging Command Is Traceable Across All Nodes (req:REQ-LOG-001)
     [Tags]    req:REQ-LOG-001
 
     ${resp}=    Send Start Charging Command    target_soc=80
@@ -52,7 +52,7 @@ Charging Command Is Traceable Across All Nodes
     ...    ${request_id}
     ...    CHARGING_START
 
-Nominal Lock Unlock Flow Produces No Gateway Errors
+Nominal Lock Unlock Flow Produces No Gateway Errors (req:REQ-LOG-002)
     [Tags]    req:REQ-LOG-002
 
     ${before}=    Get Gateway DLT File
@@ -66,7 +66,7 @@ Nominal Lock Unlock Flow Produces No Gateway Errors
     Assert No New Gateway Errors Since    ${before}
 
 
-Nominal Climate Flow Produces No Gateway Errors
+Nominal Climate Flow Produces No Gateway Errors (req:REQ-LOG-002)
     [Tags]    req:REQ-LOG-002
 
     ${before}=    Get Gateway DLT File
@@ -80,7 +80,7 @@ Nominal Climate Flow Produces No Gateway Errors
     Assert No New Gateway Errors Since    ${before}
 
 
-Nominal Charging Flow Produces No Gateway Errors
+Nominal Charging Flow Produces No Gateway Errors (req:REQ-LOG-002)
     [Tags]    req:REQ-LOG-002
 
     ${before}=    Get Gateway DLT File

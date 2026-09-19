@@ -10,7 +10,7 @@ Suite Teardown      Close Vehicle Session
 
 
 *** Test Cases ***
-Verify Body ECU Is Online During Nominal Operation
+Verify Body ECU Is Online During Nominal Operation (req:REQ-ECU-001)
     [Documentation]    Confirms the gateway reports the Body ECU online during nominal operation.
     [Tags]    req:REQ-ECU-001
 
@@ -20,7 +20,7 @@ Verify Body ECU Is Online During Nominal Operation
     ...    Assert Body ECU Online
 
 
-Verify Heartbeat Latency Above 100ms Is Logged As WARN
+Verify Heartbeat Latency Above 100ms Is Logged As WARN (req:REQ-ECU-001)
     [Documentation]    Verifies heartbeat samples above 100 ms are classified as WARN.
     [Tags]    req:REQ-ECU-001
 
@@ -37,7 +37,7 @@ Verify Heartbeat Latency Above 100ms Is Logged As WARN
     Assert All Slow Heartbeats Are WARN    ${log}
 
 
-Verify Heartbeat Warning Rate Is At Most Ten Percent
+Verify Heartbeat Warning Rate Is At Most Ten Percent (req:REQ-ECU-001)
     [Documentation]    Verifies latency WARN events affect no more than 10 percent of heartbeat responses.
     [Tags]    req:REQ-ECU-001
 
@@ -57,7 +57,7 @@ Verify Heartbeat Warning Rate Is At Most Ten Percent
     ...    msg=Heartbeat warning rate was ${warning_rate}% (${warnings}/${total}), exceeding 10%
 
 
-Verify Heartbeat Period Is Approximately Two Seconds
+Verify Heartbeat Period Is Approximately Two Seconds (req:REQ-ECU-001)
     [Documentation]    Verifies nominal heartbeat scheduling is consistent with the configured 2 s period.
     [Tags]    req:REQ-ECU-001
 
@@ -68,7 +68,7 @@ Verify Heartbeat Period Is Approximately Two Seconds
     ${log}=    Evaluate    $after[len($before):]
     Assert Heartbeat Sequence Timing    ${log}    expected_period_s=2.0
 
-Verify Three Consecutive Heartbeat Misses Mark ECU Offline
+Verify Three Consecutive Heartbeat Misses Mark ECU Offline (req:REQ-ECU-001)
     [Documentation]    Stops the Body ECU and verifies heartbeat supervision marks it offline.
     [Tags]    req:REQ-ECU-001    destructive
 

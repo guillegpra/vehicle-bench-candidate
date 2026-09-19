@@ -4,12 +4,12 @@ Resource    ../resources/adb.resource
 Suite Setup    Open Backend Session
 
 *** Test Cases ***
-Backend Is Reachable
+Backend Is Reachable (req:REQ-API-005)
     [Tags]    smoke    req:REQ-API-005
     ${status}=    Get Vehicle Status
     Should Be Equal As Strings    ${status}[vin]    WVGZZZ5NZTW000042
 
-Gateway Is Reachable Over Adb
+Gateway Is Reachable Over Adb (req:REQ-ADB-001)
     [Tags]    smoke    req:REQ-ADB-001
 
     ${model}=    Get Android Property    ro.product.model
@@ -21,7 +21,7 @@ Gateway Is Reachable Over Adb
     ${service}=    Get Android Property    init.svc.telematics
     Should Be Equal As Strings    ${service}    running
 
-Verify Gateway ADB TCP Transport
+Verify Gateway ADB TCP Transport (req:REQ-ADB-001)
     [Tags]    req:REQ-ADB-001
 
     ${result}=    Run Process

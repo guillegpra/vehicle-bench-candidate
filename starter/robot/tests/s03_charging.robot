@@ -10,7 +10,7 @@ Test Setup          Reset Vehicle Bench
 
 
 *** Test Cases ***
-Verify Initial Charging State
+Verify Initial Charging State (req:REQ-CHG-001, req:REQ-CHG-002)
     [Documentation]    Verifies the vehicle starts in a non-charging state after bench reset.
     [Tags]    req:REQ-CHG-001    req:REQ-CHG-002
 
@@ -20,7 +20,7 @@ Verify Initial Charging State
     Assert Gateway Charging State    IDLE
 
 
-Start Charging And Verify SOC Progress
+Start Charging And Verify SOC Progress (req:REQ-CHG-001)
     [Documentation]    Starts charging, verifies CHARGING state and target,
     ...                and confirms SOC increases by at least 1% within 10 seconds.
     [Tags]    req:REQ-CHG-001
@@ -59,7 +59,7 @@ Start Charging And Verify SOC Progress
     ...    1
 
 
-Stop Charging And Verify All Layers Stop
+Stop Charging And Verify All Layers Stop (req:REQ-CHG-002)
     [Documentation]    Stops an active charging session and verifies backend and VHAL
     ...                reach IDLE and SOC stops increasing.
     [Tags]    req:REQ-CHG-002
@@ -112,7 +112,7 @@ Stop Charging And Verify All Layers Stop
     ...    ${soc_at_idle}
 
 
-Complete Charging At Target SOC
+Complete Charging At Target SOC (req:REQ-CHG-004)
     [Documentation]    Verifies that reaching the target SOC causes the Body ECU/VHAL
     ...                charging state to become COMPLETE and that the backend reflects it.
     [Tags]    req:REQ-CHG-004

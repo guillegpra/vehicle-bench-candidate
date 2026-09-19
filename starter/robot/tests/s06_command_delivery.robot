@@ -54,7 +54,7 @@ Queued Command Is Forwarded Within One Second
     ...    1000
 
 
-Unexecutable Command Must Be Reported Failed With Reason
+Unexecutable Command Must Be Reported Failed With Reason (req:REQ-ECU-002)
     [Documentation]    Verifies a command that cannot be executed is never silently dropped.
     [Tags]    req:REQ-ECU-002
 
@@ -71,7 +71,7 @@ Unexecutable Command Must Be Reported Failed With Reason
 
     Should Not Be Empty    ${record['reason']}
 
-Verify Door Lock Grpc Deadline Accommodates Maximum Actuation
+Verify Door Lock Grpc Deadline Accommodates Maximum Actuation (req:REQ-NET-001)
     [Documentation]    Verifies SetDoorLock deadline is at least the maximum Body ECU actuator time.
     [Tags]    req:REQ-NET-001
 
@@ -85,7 +85,7 @@ Verify Door Lock Grpc Deadline Accommodates Maximum Actuation
     ...    ${deadline} >= 800
     ...    msg=SetDoorLock deadline ${deadline} ms is shorter than the Body ECU maximum 800 ms actuation time
 
-Nominal Door Lock Cycles Have No Grpc Deadline Cancellation
+Nominal Door Lock Cycles Have No Grpc Deadline Cancellation (req:REQ-NET-001)
     [Documentation]    Verifies nominal lock/unlock traffic has no gateway-side SetDoorLock timeout.
     [Tags]    req:REQ-NET-001
 
