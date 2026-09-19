@@ -1,0 +1,1176 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<robot generator="Robot 7.5 (Python 3.14.7 on darwin)" generated="2026-09-19T00:02:25.064145" rpa="false" schemaversion="5">
+<suite id="s1" name="S01 Lock Unlock" source="/Users/guillegarciapradales/Developer/vehicle-bench-candidate-20260916/starter/robot/tests/s01_lock_unlock.robot">
+<kw name="Initialize Vehicle Session" owner="rest_api" type="SETUP">
+<kw name="Create Dictionary" owner="BuiltIn">
+<msg time="2026-09-19T00:02:25.281841" level="INFO">${headers} = {'X-API-Key': 'dev-key-001', 'Content-Type': 'application/json'}</msg>
+<var>${headers}</var>
+<arg>X-API-Key=${API_KEY}</arg>
+<arg>Content-Type=application/json</arg>
+<doc>Creates and returns a dictionary based on the given `items`.</doc>
+<status status="PASS" start="2026-09-19T00:02:25.281230" elapsed="0.000657"/>
+</kw>
+<kw name="Create Session" owner="RequestsLibrary">
+<msg time="2026-09-19T00:02:25.282375" level="INFO">Creating Session using : alias=backend, url=http://localhost:8000, headers={'X-API-Key': 'dev-key-001', 'Content-Type': 'application/json'},                     cookies={}, auth=None, timeout=None, proxies=None, verify=False,                     debug=0 </msg>
+<arg>backend</arg>
+<arg>${BACKEND_URL}</arg>
+<arg>headers=${headers}</arg>
+<arg>disable_warnings=1</arg>
+<doc>Create Session: create a HTTP session to a server</doc>
+<status status="PASS" start="2026-09-19T00:02:25.282081" elapsed="0.000546"/>
+</kw>
+<doc>Establishes the persistent HTTP session using alias 'backend'.</doc>
+<status status="PASS" start="2026-09-19T00:02:25.280589" elapsed="0.002124"/>
+</kw>
+<test id="s1-t1" name="Verify Lock Command Execution" line="12">
+<kw name="Reset Vehicle Bench" owner="rest_api" type="SETUP">
+<kw name="POST On Session" owner="RequestsLibrary">
+<msg time="2026-09-19T00:02:25.334033" level="INFO">POST Request : url=http://localhost:8000/bench/reset 
+ path_url=/bench/reset 
+ headers={'User-Agent': 'python-requests/2.34.2', 'Accept-Encoding': 'gzip, deflate, zstd', 'Accept': '*/*', 'Connection': 'keep-alive', 'X-API-Key': 'dev-key-001', 'Content-Type': 'application/json', 'Content-Length': '0'} 
+ body=None 
+ </msg>
+<msg time="2026-09-19T00:02:25.334173" level="INFO">POST Response : url=http://localhost:8000/bench/reset 
+ status=200, reason=OK 
+ headers={'date': 'Fri, 18 Sep 2026 22:02:24 GMT', 'server': 'uvicorn', 'content-length': '78', 'content-type': 'application/json'} 
+ body={"result":"OK","tcu":{"result":"OK"},"server_time":"2026-09-18T22:02:25.330Z"} 
+ </msg>
+<msg time="2026-09-19T00:02:25.334332" level="INFO">${resp} = &lt;Response [200]&gt;</msg>
+<var>${resp}</var>
+<arg>backend</arg>
+<arg>/bench/reset</arg>
+<arg>expected_status=any</arg>
+<doc>Sends a POST request on a previously created HTTP Session.</doc>
+<status status="PASS" start="2026-09-19T00:02:25.283572" elapsed="0.050796"/>
+</kw>
+<return>
+<value>${resp}</value>
+<status status="PASS" start="2026-09-19T00:02:25.334453" elapsed="0.000061"/>
+</return>
+<doc>Resets vehicle commands and returns system to baseline.</doc>
+<status status="PASS" start="2026-09-19T00:02:25.283253" elapsed="0.051407"/>
+</kw>
+<kw name="Send Lock Command" owner="rest_api">
+<kw name="POST On Session" owner="RequestsLibrary">
+<msg time="2026-09-19T00:02:25.358456" level="INFO">POST Request : url=http://localhost:8000/vehicle/lock 
+ path_url=/vehicle/lock 
+ headers={'User-Agent': 'python-requests/2.34.2', 'Accept-Encoding': 'gzip, deflate, zstd', 'Accept': '*/*', 'Connection': 'keep-alive', 'X-API-Key': 'dev-key-001', 'Content-Type': 'application/json', 'Content-Length': '0'} 
+ body=None 
+ </msg>
+<msg time="2026-09-19T00:02:25.358544" level="INFO">POST Response : url=http://localhost:8000/vehicle/lock 
+ status=200, reason=OK 
+ headers={'date': 'Fri, 18 Sep 2026 22:02:24 GMT', 'server': 'uvicorn', 'content-length': '207', 'content-type': 'application/json'} 
+ body={"request_id":"86483262-17ff-4287-a78f-209089ddca62","command":"LOCK","status":"ACCEPTED","submitted_at":"2026-09-18T22:02:25.336Z","message":"command queued on vehicle; poll /vehicle/commands/{request_id}"} 
+ </msg>
+<msg time="2026-09-19T00:02:25.358675" level="INFO">${resp} = &lt;Response [200]&gt;</msg>
+<var>${resp}</var>
+<arg>backend</arg>
+<arg>/vehicle/lock</arg>
+<arg>expected_status=any</arg>
+<doc>Sends a POST request on a previously created HTTP Session.</doc>
+<status status="PASS" start="2026-09-19T00:02:25.335249" elapsed="0.023457"/>
+</kw>
+<return>
+<value>${resp}</value>
+<status status="PASS" start="2026-09-19T00:02:25.358779" elapsed="0.000052"/>
+</return>
+<msg time="2026-09-19T00:02:25.358970" level="INFO">${resp} = &lt;Response [200]&gt;</msg>
+<var>${resp}</var>
+<status status="PASS" start="2026-09-19T00:02:25.334935" elapsed="0.024064"/>
+</kw>
+<kw name="Should Be Equal As Integers" owner="BuiltIn">
+<msg time="2026-09-19T00:02:25.359620" level="INFO">Argument types are:
+&lt;class 'int'&gt;
+&lt;class 'str'&gt;</msg>
+<arg>${resp.status_code}</arg>
+<arg>200</arg>
+<doc>Fails if objects are unequal after converting them to integers.</doc>
+<status status="PASS" start="2026-09-19T00:02:25.359195" elapsed="0.000496"/>
+</kw>
+<kw name="Set Variable" owner="BuiltIn">
+<msg time="2026-09-19T00:02:25.360294" level="INFO">${req_id} = 86483262-17ff-4287-a78f-209089ddca62</msg>
+<var>${req_id}</var>
+<arg>${resp.json()['request_id']}</arg>
+<doc>Returns the given values which can then be assigned to a variable.</doc>
+<status status="PASS" start="2026-09-19T00:02:25.359867" elapsed="0.000458"/>
+</kw>
+<kw name="Wait For Command Terminal State" owner="rest_api">
+<kw name="Wait Until Keyword Succeeds" owner="BuiltIn">
+<kw name="Assert Command State" owner="rest_api">
+<kw name="GET On Session" owner="RequestsLibrary">
+<msg time="2026-09-19T00:02:25.366355" level="INFO">GET Request : url=http://localhost:8000/vehicle/commands/86483262-17ff-4287-a78f-209089ddca62 
+ path_url=/vehicle/commands/86483262-17ff-4287-a78f-209089ddca62 
+ headers={'User-Agent': 'python-requests/2.34.2', 'Accept-Encoding': 'gzip, deflate, zstd', 'Accept': '*/*', 'Connection': 'keep-alive', 'X-API-Key': 'dev-key-001', 'Content-Type': 'application/json'} 
+ body=None 
+ </msg>
+<msg time="2026-09-19T00:02:25.366431" level="INFO">GET Response : url=http://localhost:8000/vehicle/commands/86483262-17ff-4287-a78f-209089ddca62 
+ status=200, reason=OK 
+ headers={'date': 'Fri, 18 Sep 2026 22:02:24 GMT', 'server': 'uvicorn', 'content-length': '323', 'content-type': 'application/json'} 
+ body={"request_id":"86483262-17ff-4287-a78f-209089ddca62","command":"LOCK","params":{},"status":"ACCEPTED","reason":null,"submitted_at":"2026-09-18T22:02:25.336Z","completed_at":null,"elapsed_ms":null,"tcu_ack":{"request_id":"86483262-17ff-4287-a78f-209089ddca62","result":"QUEUED","queue_depth":1,"tcu_sw":"TCU_GW2_SW_4.12.0"}} 
+ </msg>
+<msg time="2026-09-19T00:02:25.366553" level="INFO">${resp} = &lt;Response [200]&gt;</msg>
+<var>${resp}</var>
+<arg>backend</arg>
+<arg>/vehicle/commands/${request_id}</arg>
+<arg>expected_status=200</arg>
+<doc>Sends a GET request on a previously created HTTP Session.</doc>
+<status status="PASS" start="2026-09-19T00:02:25.361838" elapsed="0.004763"/>
+</kw>
+<kw name="Set Variable" owner="BuiltIn">
+<msg time="2026-09-19T00:02:25.367251" level="INFO">${data} = {'request_id': '86483262-17ff-4287-a78f-209089ddca62', 'command': 'LOCK', 'params': {}, 'status': 'ACCEPTED', 'reason': None, 'submitted_at': '2026-09-18T22:02:25.336Z', 'completed_at': None, 'elapsed...</msg>
+<var>${data}</var>
+<arg>${resp.json()}</arg>
+<doc>Returns the given values which can then be assigned to a variable.</doc>
+<status status="PASS" start="2026-09-19T00:02:25.366781" elapsed="0.000502"/>
+</kw>
+<if>
+<branch type="IF" condition="'${data['status']}' == 'FAILED'">
+<kw name="Fail" owner="BuiltIn">
+<arg>Vehicle command ${request_id} REJECTED with reason: "${data.get('reason')}"</arg>
+<doc>Fails the test or task with the given message and optionally alters its tags.</doc>
+<status status="NOT RUN" start="2026-09-19T00:02:25.367658" elapsed="0.000025"/>
+</kw>
+<status status="NOT RUN" start="2026-09-19T00:02:25.367385" elapsed="0.000335"/>
+</branch>
+<status status="PASS" start="2026-09-19T00:02:25.367354" elapsed="0.000398"/>
+</if>
+<kw name="Should Be Equal As Strings" owner="BuiltIn">
+<msg time="2026-09-19T00:02:25.368384" level="FAIL">Command still pending: ACCEPTED != COMPLETED</msg>
+<arg>${data['status']}</arg>
+<arg>COMPLETED</arg>
+<arg>msg=Command still pending</arg>
+<doc>Fails if objects are unequal after converting them to strings.</doc>
+<status status="FAIL" start="2026-09-19T00:02:25.367881" elapsed="0.000658">Command still pending: ACCEPTED != COMPLETED</status>
+</kw>
+<arg>${request_id}</arg>
+<status status="FAIL" start="2026-09-19T00:02:25.361543" elapsed="0.007137">Command still pending: ACCEPTED != COMPLETED</status>
+</kw>
+<kw name="Assert Command State" owner="rest_api">
+<kw name="GET On Session" owner="RequestsLibrary">
+<msg time="2026-09-19T00:02:25.876739" level="INFO">GET Request : url=http://localhost:8000/vehicle/commands/86483262-17ff-4287-a78f-209089ddca62 
+ path_url=/vehicle/commands/86483262-17ff-4287-a78f-209089ddca62 
+ headers={'User-Agent': 'python-requests/2.34.2', 'Accept-Encoding': 'gzip, deflate, zstd', 'Accept': '*/*', 'Connection': 'keep-alive', 'X-API-Key': 'dev-key-001', 'Content-Type': 'application/json'} 
+ body=None 
+ </msg>
+<msg time="2026-09-19T00:02:25.876827" level="INFO">GET Response : url=http://localhost:8000/vehicle/commands/86483262-17ff-4287-a78f-209089ddca62 
+ status=200, reason=OK 
+ headers={'date': 'Fri, 18 Sep 2026 22:02:24 GMT', 'server': 'uvicorn', 'content-length': '323', 'content-type': 'application/json'} 
+ body={"request_id":"86483262-17ff-4287-a78f-209089ddca62","command":"LOCK","params":{},"status":"ACCEPTED","reason":null,"submitted_at":"2026-09-18T22:02:25.336Z","completed_at":null,"elapsed_ms":null,"tcu_ack":{"request_id":"86483262-17ff-4287-a78f-209089ddca62","result":"QUEUED","queue_depth":1,"tcu_sw":"TCU_GW2_SW_4.12.0"}} 
+ </msg>
+<msg time="2026-09-19T00:02:25.876976" level="INFO">${resp} = &lt;Response [200]&gt;</msg>
+<var>${resp}</var>
+<arg>backend</arg>
+<arg>/vehicle/commands/${request_id}</arg>
+<arg>expected_status=200</arg>
+<doc>Sends a GET request on a previously created HTTP Session.</doc>
+<status status="PASS" start="2026-09-19T00:02:25.870530" elapsed="0.006480"/>
+</kw>
+<kw name="Set Variable" owner="BuiltIn">
+<msg time="2026-09-19T00:02:25.877834" level="INFO">${data} = {'request_id': '86483262-17ff-4287-a78f-209089ddca62', 'command': 'LOCK', 'params': {}, 'status': 'ACCEPTED', 'reason': None, 'submitted_at': '2026-09-18T22:02:25.336Z', 'completed_at': None, 'elapsed...</msg>
+<var>${data}</var>
+<arg>${resp.json()}</arg>
+<doc>Returns the given values which can then be assigned to a variable.</doc>
+<status status="PASS" start="2026-09-19T00:02:25.877212" elapsed="0.000659"/>
+</kw>
+<if>
+<branch type="IF" condition="'${data['status']}' == 'FAILED'">
+<kw name="Fail" owner="BuiltIn">
+<arg>Vehicle command ${request_id} REJECTED with reason: "${data.get('reason')}"</arg>
+<doc>Fails the test or task with the given message and optionally alters its tags.</doc>
+<status status="NOT RUN" start="2026-09-19T00:02:25.878272" elapsed="0.000028"/>
+</kw>
+<status status="NOT RUN" start="2026-09-19T00:02:25.877978" elapsed="0.000362"/>
+</branch>
+<status status="PASS" start="2026-09-19T00:02:25.877946" elapsed="0.000430"/>
+</if>
+<kw name="Should Be Equal As Strings" owner="BuiltIn">
+<msg time="2026-09-19T00:02:25.879030" level="FAIL">Command still pending: ACCEPTED != COMPLETED</msg>
+<arg>${data['status']}</arg>
+<arg>COMPLETED</arg>
+<arg>msg=Command still pending</arg>
+<doc>Fails if objects are unequal after converting them to strings.</doc>
+<status status="FAIL" start="2026-09-19T00:02:25.878499" elapsed="0.000635">Command still pending: ACCEPTED != COMPLETED</status>
+</kw>
+<arg>${request_id}</arg>
+<status status="FAIL" start="2026-09-19T00:02:25.869934" elapsed="0.009334">Command still pending: ACCEPTED != COMPLETED</status>
+</kw>
+<kw name="Assert Command State" owner="rest_api">
+<kw name="GET On Session" owner="RequestsLibrary">
+<msg time="2026-09-19T00:02:26.388421" level="INFO">GET Request : url=http://localhost:8000/vehicle/commands/86483262-17ff-4287-a78f-209089ddca62 
+ path_url=/vehicle/commands/86483262-17ff-4287-a78f-209089ddca62 
+ headers={'User-Agent': 'python-requests/2.34.2', 'Accept-Encoding': 'gzip, deflate, zstd', 'Accept': '*/*', 'Connection': 'keep-alive', 'X-API-Key': 'dev-key-001', 'Content-Type': 'application/json'} 
+ body=None 
+ </msg>
+<msg time="2026-09-19T00:02:26.388527" level="INFO">GET Response : url=http://localhost:8000/vehicle/commands/86483262-17ff-4287-a78f-209089ddca62 
+ status=200, reason=OK 
+ headers={'date': 'Fri, 18 Sep 2026 22:02:25 GMT', 'server': 'uvicorn', 'content-length': '351', 'content-type': 'application/json'} 
+ body={"request_id":"86483262-17ff-4287-a78f-209089ddca62","command":"LOCK","params":{},"status":"FAILED","reason":"ECU_TIMEOUT","submitted_at":"2026-09-18T22:02:25.336Z","completed_at":"2026-09-18T22:02:25.961Z","elapsed_ms":605,"tcu_ack":{"request_id":"86483262-17ff-4287-a78f-209089ddca62","result":"QUEUED","queue_depth":1,"tcu_sw":"TCU_GW2_SW_4.12.0"}} 
+ </msg>
+<msg time="2026-09-19T00:02:26.388693" level="INFO">${resp} = &lt;Response [200]&gt;</msg>
+<var>${resp}</var>
+<arg>backend</arg>
+<arg>/vehicle/commands/${request_id}</arg>
+<arg>expected_status=200</arg>
+<doc>Sends a GET request on a previously created HTTP Session.</doc>
+<status status="PASS" start="2026-09-19T00:02:26.381791" elapsed="0.006942"/>
+</kw>
+<kw name="Set Variable" owner="BuiltIn">
+<msg time="2026-09-19T00:02:26.389561" level="INFO">${data} = {'request_id': '86483262-17ff-4287-a78f-209089ddca62', 'command': 'LOCK', 'params': {}, 'status': 'FAILED', 'reason': 'ECU_TIMEOUT', 'submitted_at': '2026-09-18T22:02:25.336Z', 'completed_at': '2026-0...</msg>
+<var>${data}</var>
+<arg>${resp.json()}</arg>
+<doc>Returns the given values which can then be assigned to a variable.</doc>
+<status status="PASS" start="2026-09-19T00:02:26.388965" elapsed="0.000637"/>
+</kw>
+<if>
+<branch type="IF" condition="'${data['status']}' == 'FAILED'">
+<kw name="Fail" owner="BuiltIn">
+<msg time="2026-09-19T00:02:26.390539" level="FAIL">Vehicle command 86483262-17ff-4287-a78f-209089ddca62 REJECTED with reason: "ECU_TIMEOUT"</msg>
+<arg>Vehicle command ${request_id} REJECTED with reason: "${data.get('reason')}"</arg>
+<doc>Fails the test or task with the given message and optionally alters its tags.</doc>
+<status status="FAIL" start="2026-09-19T00:02:26.390046" elapsed="0.000578">Vehicle command 86483262-17ff-4287-a78f-209089ddca62 REJECTED with reason: "ECU_TIMEOUT"</status>
+</kw>
+<status status="FAIL" start="2026-09-19T00:02:26.389719" elapsed="0.000984">Vehicle command 86483262-17ff-4287-a78f-209089ddca62 REJECTED with reason: "ECU_TIMEOUT"</status>
+</branch>
+<status status="FAIL" start="2026-09-19T00:02:26.389684" elapsed="0.001071">Vehicle command 86483262-17ff-4287-a78f-209089ddca62 REJECTED with reason: "ECU_TIMEOUT"</status>
+</if>
+<kw name="Should Be Equal As Strings" owner="BuiltIn">
+<arg>${data['status']}</arg>
+<arg>COMPLETED</arg>
+<arg>msg=Command still pending</arg>
+<doc>Fails if objects are unequal after converting them to strings.</doc>
+<status status="NOT RUN" start="2026-09-19T00:02:26.390904" elapsed="0.000034"/>
+</kw>
+<arg>${request_id}</arg>
+<status status="FAIL" start="2026-09-19T00:02:26.381175" elapsed="0.009914">Vehicle command 86483262-17ff-4287-a78f-209089ddca62 REJECTED with reason: "ECU_TIMEOUT"</status>
+</kw>
+<kw name="Assert Command State" owner="rest_api">
+<kw name="GET On Session" owner="RequestsLibrary">
+<msg time="2026-09-19T00:02:26.897720" level="INFO">GET Request : url=http://localhost:8000/vehicle/commands/86483262-17ff-4287-a78f-209089ddca62 
+ path_url=/vehicle/commands/86483262-17ff-4287-a78f-209089ddca62 
+ headers={'User-Agent': 'python-requests/2.34.2', 'Accept-Encoding': 'gzip, deflate, zstd', 'Accept': '*/*', 'Connection': 'keep-alive', 'X-API-Key': 'dev-key-001', 'Content-Type': 'application/json'} 
+ body=None 
+ </msg>
+<msg time="2026-09-19T00:02:26.897815" level="INFO">GET Response : url=http://localhost:8000/vehicle/commands/86483262-17ff-4287-a78f-209089ddca62 
+ status=200, reason=OK 
+ headers={'date': 'Fri, 18 Sep 2026 22:02:26 GMT', 'server': 'uvicorn', 'content-length': '351', 'content-type': 'application/json'} 
+ body={"request_id":"86483262-17ff-4287-a78f-209089ddca62","command":"LOCK","params":{},"status":"FAILED","reason":"ECU_TIMEOUT","submitted_at":"2026-09-18T22:02:25.336Z","completed_at":"2026-09-18T22:02:25.961Z","elapsed_ms":605,"tcu_ack":{"request_id":"86483262-17ff-4287-a78f-209089ddca62","result":"QUEUED","queue_depth":1,"tcu_sw":"TCU_GW2_SW_4.12.0"}} 
+ </msg>
+<msg time="2026-09-19T00:02:26.897974" level="INFO">${resp} = &lt;Response [200]&gt;</msg>
+<var>${resp}</var>
+<arg>backend</arg>
+<arg>/vehicle/commands/${request_id}</arg>
+<arg>expected_status=200</arg>
+<doc>Sends a GET request on a previously created HTTP Session.</doc>
+<status status="PASS" start="2026-09-19T00:02:26.892515" elapsed="0.005493"/>
+</kw>
+<kw name="Set Variable" owner="BuiltIn">
+<msg time="2026-09-19T00:02:26.898718" level="INFO">${data} = {'request_id': '86483262-17ff-4287-a78f-209089ddca62', 'command': 'LOCK', 'params': {}, 'status': 'FAILED', 'reason': 'ECU_TIMEOUT', 'submitted_at': '2026-09-18T22:02:25.336Z', 'completed_at': '2026-0...</msg>
+<var>${data}</var>
+<arg>${resp.json()}</arg>
+<doc>Returns the given values which can then be assigned to a variable.</doc>
+<status status="PASS" start="2026-09-19T00:02:26.898185" elapsed="0.000569"/>
+</kw>
+<if>
+<branch type="IF" condition="'${data['status']}' == 'FAILED'">
+<kw name="Fail" owner="BuiltIn">
+<msg time="2026-09-19T00:02:26.899638" level="FAIL">Vehicle command 86483262-17ff-4287-a78f-209089ddca62 REJECTED with reason: "ECU_TIMEOUT"</msg>
+<arg>Vehicle command ${request_id} REJECTED with reason: "${data.get('reason')}"</arg>
+<doc>Fails the test or task with the given message and optionally alters its tags.</doc>
+<status status="FAIL" start="2026-09-19T00:02:26.899143" elapsed="0.000577">Vehicle command 86483262-17ff-4287-a78f-209089ddca62 REJECTED with reason: "ECU_TIMEOUT"</status>
+</kw>
+<status status="FAIL" start="2026-09-19T00:02:26.898849" elapsed="0.000947">Vehicle command 86483262-17ff-4287-a78f-209089ddca62 REJECTED with reason: "ECU_TIMEOUT"</status>
+</branch>
+<status status="FAIL" start="2026-09-19T00:02:26.898822" elapsed="0.001018">Vehicle command 86483262-17ff-4287-a78f-209089ddca62 REJECTED with reason: "ECU_TIMEOUT"</status>
+</if>
+<kw name="Should Be Equal As Strings" owner="BuiltIn">
+<arg>${data['status']}</arg>
+<arg>COMPLETED</arg>
+<arg>msg=Command still pending</arg>
+<doc>Fails if objects are unequal after converting them to strings.</doc>
+<status status="NOT RUN" start="2026-09-19T00:02:26.899979" elapsed="0.000026"/>
+</kw>
+<arg>${request_id}</arg>
+<status status="FAIL" start="2026-09-19T00:02:26.892103" elapsed="0.008008">Vehicle command 86483262-17ff-4287-a78f-209089ddca62 REJECTED with reason: "ECU_TIMEOUT"</status>
+</kw>
+<kw name="Assert Command State" owner="rest_api">
+<kw name="GET On Session" owner="RequestsLibrary">
+<msg time="2026-09-19T00:02:27.407314" level="INFO">GET Request : url=http://localhost:8000/vehicle/commands/86483262-17ff-4287-a78f-209089ddca62 
+ path_url=/vehicle/commands/86483262-17ff-4287-a78f-209089ddca62 
+ headers={'User-Agent': 'python-requests/2.34.2', 'Accept-Encoding': 'gzip, deflate, zstd', 'Accept': '*/*', 'Connection': 'keep-alive', 'X-API-Key': 'dev-key-001', 'Content-Type': 'application/json'} 
+ body=None 
+ </msg>
+<msg time="2026-09-19T00:02:27.407413" level="INFO">GET Response : url=http://localhost:8000/vehicle/commands/86483262-17ff-4287-a78f-209089ddca62 
+ status=200, reason=OK 
+ headers={'date': 'Fri, 18 Sep 2026 22:02:26 GMT', 'server': 'uvicorn', 'content-length': '351', 'content-type': 'application/json'} 
+ body={"request_id":"86483262-17ff-4287-a78f-209089ddca62","command":"LOCK","params":{},"status":"FAILED","reason":"ECU_TIMEOUT","submitted_at":"2026-09-18T22:02:25.336Z","completed_at":"2026-09-18T22:02:25.961Z","elapsed_ms":605,"tcu_ack":{"request_id":"86483262-17ff-4287-a78f-209089ddca62","result":"QUEUED","queue_depth":1,"tcu_sw":"TCU_GW2_SW_4.12.0"}} 
+ </msg>
+<msg time="2026-09-19T00:02:27.407581" level="INFO">${resp} = &lt;Response [200]&gt;</msg>
+<var>${resp}</var>
+<arg>backend</arg>
+<arg>/vehicle/commands/${request_id}</arg>
+<arg>expected_status=200</arg>
+<doc>Sends a GET request on a previously created HTTP Session.</doc>
+<status status="PASS" start="2026-09-19T00:02:27.401365" elapsed="0.006258"/>
+</kw>
+<kw name="Set Variable" owner="BuiltIn">
+<msg time="2026-09-19T00:02:27.408509" level="INFO">${data} = {'request_id': '86483262-17ff-4287-a78f-209089ddca62', 'command': 'LOCK', 'params': {}, 'status': 'FAILED', 'reason': 'ECU_TIMEOUT', 'submitted_at': '2026-09-18T22:02:25.336Z', 'completed_at': '2026-0...</msg>
+<var>${data}</var>
+<arg>${resp.json()}</arg>
+<doc>Returns the given values which can then be assigned to a variable.</doc>
+<status status="PASS" start="2026-09-19T00:02:27.407851" elapsed="0.000704"/>
+</kw>
+<if>
+<branch type="IF" condition="'${data['status']}' == 'FAILED'">
+<kw name="Fail" owner="BuiltIn">
+<msg time="2026-09-19T00:02:27.409705" level="FAIL">Vehicle command 86483262-17ff-4287-a78f-209089ddca62 REJECTED with reason: "ECU_TIMEOUT"</msg>
+<arg>Vehicle command ${request_id} REJECTED with reason: "${data.get('reason')}"</arg>
+<doc>Fails the test or task with the given message and optionally alters its tags.</doc>
+<status status="FAIL" start="2026-09-19T00:02:27.409036" elapsed="0.000764">Vehicle command 86483262-17ff-4287-a78f-209089ddca62 REJECTED with reason: "ECU_TIMEOUT"</status>
+</kw>
+<status status="FAIL" start="2026-09-19T00:02:27.408679" elapsed="0.001206">Vehicle command 86483262-17ff-4287-a78f-209089ddca62 REJECTED with reason: "ECU_TIMEOUT"</status>
+</branch>
+<status status="FAIL" start="2026-09-19T00:02:27.408646" elapsed="0.001295">Vehicle command 86483262-17ff-4287-a78f-209089ddca62 REJECTED with reason: "ECU_TIMEOUT"</status>
+</if>
+<kw name="Should Be Equal As Strings" owner="BuiltIn">
+<arg>${data['status']}</arg>
+<arg>COMPLETED</arg>
+<arg>msg=Command still pending</arg>
+<doc>Fails if objects are unequal after converting them to strings.</doc>
+<status status="NOT RUN" start="2026-09-19T00:02:27.410107" elapsed="0.000030"/>
+</kw>
+<arg>${request_id}</arg>
+<status status="FAIL" start="2026-09-19T00:02:27.400772" elapsed="0.009488">Vehicle command 86483262-17ff-4287-a78f-209089ddca62 REJECTED with reason: "ECU_TIMEOUT"</status>
+</kw>
+<kw name="Assert Command State" owner="rest_api">
+<kw name="GET On Session" owner="RequestsLibrary">
+<msg time="2026-09-19T00:02:27.918303" level="INFO">GET Request : url=http://localhost:8000/vehicle/commands/86483262-17ff-4287-a78f-209089ddca62 
+ path_url=/vehicle/commands/86483262-17ff-4287-a78f-209089ddca62 
+ headers={'User-Agent': 'python-requests/2.34.2', 'Accept-Encoding': 'gzip, deflate, zstd', 'Accept': '*/*', 'Connection': 'keep-alive', 'X-API-Key': 'dev-key-001', 'Content-Type': 'application/json'} 
+ body=None 
+ </msg>
+<msg time="2026-09-19T00:02:27.918385" level="INFO">GET Response : url=http://localhost:8000/vehicle/commands/86483262-17ff-4287-a78f-209089ddca62 
+ status=200, reason=OK 
+ headers={'date': 'Fri, 18 Sep 2026 22:02:27 GMT', 'server': 'uvicorn', 'content-length': '351', 'content-type': 'application/json'} 
+ body={"request_id":"86483262-17ff-4287-a78f-209089ddca62","command":"LOCK","params":{},"status":"FAILED","reason":"ECU_TIMEOUT","submitted_at":"2026-09-18T22:02:25.336Z","completed_at":"2026-09-18T22:02:25.961Z","elapsed_ms":605,"tcu_ack":{"request_id":"86483262-17ff-4287-a78f-209089ddca62","result":"QUEUED","queue_depth":1,"tcu_sw":"TCU_GW2_SW_4.12.0"}} 
+ </msg>
+<msg time="2026-09-19T00:02:27.918520" level="INFO">${resp} = &lt;Response [200]&gt;</msg>
+<var>${resp}</var>
+<arg>backend</arg>
+<arg>/vehicle/commands/${request_id}</arg>
+<arg>expected_status=200</arg>
+<doc>Sends a GET request on a previously created HTTP Session.</doc>
+<status status="PASS" start="2026-09-19T00:02:27.912982" elapsed="0.005573"/>
+</kw>
+<kw name="Set Variable" owner="BuiltIn">
+<msg time="2026-09-19T00:02:27.919268" level="INFO">${data} = {'request_id': '86483262-17ff-4287-a78f-209089ddca62', 'command': 'LOCK', 'params': {}, 'status': 'FAILED', 'reason': 'ECU_TIMEOUT', 'submitted_at': '2026-09-18T22:02:25.336Z', 'completed_at': '2026-0...</msg>
+<var>${data}</var>
+<arg>${resp.json()}</arg>
+<doc>Returns the given values which can then be assigned to a variable.</doc>
+<status status="PASS" start="2026-09-19T00:02:27.918731" elapsed="0.000574"/>
+</kw>
+<if>
+<branch type="IF" condition="'${data['status']}' == 'FAILED'">
+<kw name="Fail" owner="BuiltIn">
+<msg time="2026-09-19T00:02:27.920227" level="FAIL">Vehicle command 86483262-17ff-4287-a78f-209089ddca62 REJECTED with reason: "ECU_TIMEOUT"</msg>
+<arg>Vehicle command ${request_id} REJECTED with reason: "${data.get('reason')}"</arg>
+<doc>Fails the test or task with the given message and optionally alters its tags.</doc>
+<status status="FAIL" start="2026-09-19T00:02:27.919727" elapsed="0.000606">Vehicle command 86483262-17ff-4287-a78f-209089ddca62 REJECTED with reason: "ECU_TIMEOUT"</status>
+</kw>
+<status status="FAIL" start="2026-09-19T00:02:27.919409" elapsed="0.001006">Vehicle command 86483262-17ff-4287-a78f-209089ddca62 REJECTED with reason: "ECU_TIMEOUT"</status>
+</branch>
+<status status="FAIL" start="2026-09-19T00:02:27.919381" elapsed="0.001081">Vehicle command 86483262-17ff-4287-a78f-209089ddca62 REJECTED with reason: "ECU_TIMEOUT"</status>
+</if>
+<kw name="Should Be Equal As Strings" owner="BuiltIn">
+<arg>${data['status']}</arg>
+<arg>COMPLETED</arg>
+<arg>msg=Command still pending</arg>
+<doc>Fails if objects are unequal after converting them to strings.</doc>
+<status status="NOT RUN" start="2026-09-19T00:02:27.920614" elapsed="0.000035"/>
+</kw>
+<arg>${request_id}</arg>
+<status status="FAIL" start="2026-09-19T00:02:27.912478" elapsed="0.008288">Vehicle command 86483262-17ff-4287-a78f-209089ddca62 REJECTED with reason: "ECU_TIMEOUT"</status>
+</kw>
+<kw name="Assert Command State" owner="rest_api">
+<kw name="GET On Session" owner="RequestsLibrary">
+<msg time="2026-09-19T00:02:28.429566" level="INFO">GET Request : url=http://localhost:8000/vehicle/commands/86483262-17ff-4287-a78f-209089ddca62 
+ path_url=/vehicle/commands/86483262-17ff-4287-a78f-209089ddca62 
+ headers={'User-Agent': 'python-requests/2.34.2', 'Accept-Encoding': 'gzip, deflate, zstd', 'Accept': '*/*', 'Connection': 'keep-alive', 'X-API-Key': 'dev-key-001', 'Content-Type': 'application/json'} 
+ body=None 
+ </msg>
+<msg time="2026-09-19T00:02:28.429648" level="INFO">GET Response : url=http://localhost:8000/vehicle/commands/86483262-17ff-4287-a78f-209089ddca62 
+ status=200, reason=OK 
+ headers={'date': 'Fri, 18 Sep 2026 22:02:27 GMT', 'server': 'uvicorn', 'content-length': '351', 'content-type': 'application/json'} 
+ body={"request_id":"86483262-17ff-4287-a78f-209089ddca62","command":"LOCK","params":{},"status":"FAILED","reason":"ECU_TIMEOUT","submitted_at":"2026-09-18T22:02:25.336Z","completed_at":"2026-09-18T22:02:25.961Z","elapsed_ms":605,"tcu_ack":{"request_id":"86483262-17ff-4287-a78f-209089ddca62","result":"QUEUED","queue_depth":1,"tcu_sw":"TCU_GW2_SW_4.12.0"}} 
+ </msg>
+<msg time="2026-09-19T00:02:28.429790" level="INFO">${resp} = &lt;Response [200]&gt;</msg>
+<var>${resp}</var>
+<arg>backend</arg>
+<arg>/vehicle/commands/${request_id}</arg>
+<arg>expected_status=200</arg>
+<doc>Sends a GET request on a previously created HTTP Session.</doc>
+<status status="PASS" start="2026-09-19T00:02:28.421653" elapsed="0.008168"/>
+</kw>
+<kw name="Set Variable" owner="BuiltIn">
+<msg time="2026-09-19T00:02:28.430456" level="INFO">${data} = {'request_id': '86483262-17ff-4287-a78f-209089ddca62', 'command': 'LOCK', 'params': {}, 'status': 'FAILED', 'reason': 'ECU_TIMEOUT', 'submitted_at': '2026-09-18T22:02:25.336Z', 'completed_at': '2026-0...</msg>
+<var>${data}</var>
+<arg>${resp.json()}</arg>
+<doc>Returns the given values which can then be assigned to a variable.</doc>
+<status status="PASS" start="2026-09-19T00:02:28.429987" elapsed="0.000502"/>
+</kw>
+<if>
+<branch type="IF" condition="'${data['status']}' == 'FAILED'">
+<kw name="Fail" owner="BuiltIn">
+<msg time="2026-09-19T00:02:28.431259" level="FAIL">Vehicle command 86483262-17ff-4287-a78f-209089ddca62 REJECTED with reason: "ECU_TIMEOUT"</msg>
+<arg>Vehicle command ${request_id} REJECTED with reason: "${data.get('reason')}"</arg>
+<doc>Fails the test or task with the given message and optionally alters its tags.</doc>
+<status status="FAIL" start="2026-09-19T00:02:28.430838" elapsed="0.000499">Vehicle command 86483262-17ff-4287-a78f-209089ddca62 REJECTED with reason: "ECU_TIMEOUT"</status>
+</kw>
+<status status="FAIL" start="2026-09-19T00:02:28.430579" elapsed="0.000827">Vehicle command 86483262-17ff-4287-a78f-209089ddca62 REJECTED with reason: "ECU_TIMEOUT"</status>
+</branch>
+<status status="FAIL" start="2026-09-19T00:02:28.430554" elapsed="0.000892">Vehicle command 86483262-17ff-4287-a78f-209089ddca62 REJECTED with reason: "ECU_TIMEOUT"</status>
+</if>
+<kw name="Should Be Equal As Strings" owner="BuiltIn">
+<arg>${data['status']}</arg>
+<arg>COMPLETED</arg>
+<arg>msg=Command still pending</arg>
+<doc>Fails if objects are unequal after converting them to strings.</doc>
+<status status="NOT RUN" start="2026-09-19T00:02:28.431577" elapsed="0.000024"/>
+</kw>
+<arg>${request_id}</arg>
+<status status="FAIL" start="2026-09-19T00:02:28.421196" elapsed="0.010504">Vehicle command 86483262-17ff-4287-a78f-209089ddca62 REJECTED with reason: "ECU_TIMEOUT"</status>
+</kw>
+<kw name="Assert Command State" owner="rest_api">
+<kw name="GET On Session" owner="RequestsLibrary">
+<msg time="2026-09-19T00:02:28.941022" level="INFO">GET Request : url=http://localhost:8000/vehicle/commands/86483262-17ff-4287-a78f-209089ddca62 
+ path_url=/vehicle/commands/86483262-17ff-4287-a78f-209089ddca62 
+ headers={'User-Agent': 'python-requests/2.34.2', 'Accept-Encoding': 'gzip, deflate, zstd', 'Accept': '*/*', 'Connection': 'keep-alive', 'X-API-Key': 'dev-key-001', 'Content-Type': 'application/json'} 
+ body=None 
+ </msg>
+<msg time="2026-09-19T00:02:28.941118" level="INFO">GET Response : url=http://localhost:8000/vehicle/commands/86483262-17ff-4287-a78f-209089ddca62 
+ status=200, reason=OK 
+ headers={'date': 'Fri, 18 Sep 2026 22:02:28 GMT', 'server': 'uvicorn', 'content-length': '351', 'content-type': 'application/json'} 
+ body={"request_id":"86483262-17ff-4287-a78f-209089ddca62","command":"LOCK","params":{},"status":"FAILED","reason":"ECU_TIMEOUT","submitted_at":"2026-09-18T22:02:25.336Z","completed_at":"2026-09-18T22:02:25.961Z","elapsed_ms":605,"tcu_ack":{"request_id":"86483262-17ff-4287-a78f-209089ddca62","result":"QUEUED","queue_depth":1,"tcu_sw":"TCU_GW2_SW_4.12.0"}} 
+ </msg>
+<msg time="2026-09-19T00:02:28.941275" level="INFO">${resp} = &lt;Response [200]&gt;</msg>
+<var>${resp}</var>
+<arg>backend</arg>
+<arg>/vehicle/commands/${request_id}</arg>
+<arg>expected_status=200</arg>
+<doc>Sends a GET request on a previously created HTTP Session.</doc>
+<status status="PASS" start="2026-09-19T00:02:28.934738" elapsed="0.006577"/>
+</kw>
+<kw name="Set Variable" owner="BuiltIn">
+<msg time="2026-09-19T00:02:28.942112" level="INFO">${data} = {'request_id': '86483262-17ff-4287-a78f-209089ddca62', 'command': 'LOCK', 'params': {}, 'status': 'FAILED', 'reason': 'ECU_TIMEOUT', 'submitted_at': '2026-09-18T22:02:25.336Z', 'completed_at': '2026-0...</msg>
+<var>${data}</var>
+<arg>${resp.json()}</arg>
+<doc>Returns the given values which can then be assigned to a variable.</doc>
+<status status="PASS" start="2026-09-19T00:02:28.941513" elapsed="0.000638"/>
+</kw>
+<if>
+<branch type="IF" condition="'${data['status']}' == 'FAILED'">
+<kw name="Fail" owner="BuiltIn">
+<msg time="2026-09-19T00:02:28.943003" level="FAIL">Vehicle command 86483262-17ff-4287-a78f-209089ddca62 REJECTED with reason: "ECU_TIMEOUT"</msg>
+<arg>Vehicle command ${request_id} REJECTED with reason: "${data.get('reason')}"</arg>
+<doc>Fails the test or task with the given message and optionally alters its tags.</doc>
+<status status="FAIL" start="2026-09-19T00:02:28.942531" elapsed="0.000555">Vehicle command 86483262-17ff-4287-a78f-209089ddca62 REJECTED with reason: "ECU_TIMEOUT"</status>
+</kw>
+<status status="FAIL" start="2026-09-19T00:02:28.942247" elapsed="0.000916">Vehicle command 86483262-17ff-4287-a78f-209089ddca62 REJECTED with reason: "ECU_TIMEOUT"</status>
+</branch>
+<status status="FAIL" start="2026-09-19T00:02:28.942220" elapsed="0.000987">Vehicle command 86483262-17ff-4287-a78f-209089ddca62 REJECTED with reason: "ECU_TIMEOUT"</status>
+</if>
+<kw name="Should Be Equal As Strings" owner="BuiltIn">
+<arg>${data['status']}</arg>
+<arg>COMPLETED</arg>
+<arg>msg=Command still pending</arg>
+<doc>Fails if objects are unequal after converting them to strings.</doc>
+<status status="NOT RUN" start="2026-09-19T00:02:28.943352" elapsed="0.000027"/>
+</kw>
+<arg>${request_id}</arg>
+<status status="FAIL" start="2026-09-19T00:02:28.934173" elapsed="0.009317">Vehicle command 86483262-17ff-4287-a78f-209089ddca62 REJECTED with reason: "ECU_TIMEOUT"</status>
+</kw>
+<kw name="Assert Command State" owner="rest_api">
+<kw name="GET On Session" owner="RequestsLibrary">
+<msg time="2026-09-19T00:02:29.450588" level="INFO">GET Request : url=http://localhost:8000/vehicle/commands/86483262-17ff-4287-a78f-209089ddca62 
+ path_url=/vehicle/commands/86483262-17ff-4287-a78f-209089ddca62 
+ headers={'User-Agent': 'python-requests/2.34.2', 'Accept-Encoding': 'gzip, deflate, zstd', 'Accept': '*/*', 'Connection': 'keep-alive', 'X-API-Key': 'dev-key-001', 'Content-Type': 'application/json'} 
+ body=None 
+ </msg>
+<msg time="2026-09-19T00:02:29.450670" level="INFO">GET Response : url=http://localhost:8000/vehicle/commands/86483262-17ff-4287-a78f-209089ddca62 
+ status=200, reason=OK 
+ headers={'date': 'Fri, 18 Sep 2026 22:02:28 GMT', 'server': 'uvicorn', 'content-length': '351', 'content-type': 'application/json'} 
+ body={"request_id":"86483262-17ff-4287-a78f-209089ddca62","command":"LOCK","params":{},"status":"FAILED","reason":"ECU_TIMEOUT","submitted_at":"2026-09-18T22:02:25.336Z","completed_at":"2026-09-18T22:02:25.961Z","elapsed_ms":605,"tcu_ack":{"request_id":"86483262-17ff-4287-a78f-209089ddca62","result":"QUEUED","queue_depth":1,"tcu_sw":"TCU_GW2_SW_4.12.0"}} 
+ </msg>
+<msg time="2026-09-19T00:02:29.450807" level="INFO">${resp} = &lt;Response [200]&gt;</msg>
+<var>${resp}</var>
+<arg>backend</arg>
+<arg>/vehicle/commands/${request_id}</arg>
+<arg>expected_status=200</arg>
+<doc>Sends a GET request on a previously created HTTP Session.</doc>
+<status status="PASS" start="2026-09-19T00:02:29.444976" elapsed="0.005865"/>
+</kw>
+<kw name="Set Variable" owner="BuiltIn">
+<msg time="2026-09-19T00:02:29.451553" level="INFO">${data} = {'request_id': '86483262-17ff-4287-a78f-209089ddca62', 'command': 'LOCK', 'params': {}, 'status': 'FAILED', 'reason': 'ECU_TIMEOUT', 'submitted_at': '2026-09-18T22:02:25.336Z', 'completed_at': '2026-0...</msg>
+<var>${data}</var>
+<arg>${resp.json()}</arg>
+<doc>Returns the given values which can then be assigned to a variable.</doc>
+<status status="PASS" start="2026-09-19T00:02:29.451010" elapsed="0.000581"/>
+</kw>
+<if>
+<branch type="IF" condition="'${data['status']}' == 'FAILED'">
+<kw name="Fail" owner="BuiltIn">
+<msg time="2026-09-19T00:02:29.452483" level="FAIL">Vehicle command 86483262-17ff-4287-a78f-209089ddca62 REJECTED with reason: "ECU_TIMEOUT"</msg>
+<arg>Vehicle command ${request_id} REJECTED with reason: "${data.get('reason')}"</arg>
+<doc>Fails the test or task with the given message and optionally alters its tags.</doc>
+<status status="FAIL" start="2026-09-19T00:02:29.451992" elapsed="0.000580">Vehicle command 86483262-17ff-4287-a78f-209089ddca62 REJECTED with reason: "ECU_TIMEOUT"</status>
+</kw>
+<status status="FAIL" start="2026-09-19T00:02:29.451693" elapsed="0.000959">Vehicle command 86483262-17ff-4287-a78f-209089ddca62 REJECTED with reason: "ECU_TIMEOUT"</status>
+</branch>
+<status status="FAIL" start="2026-09-19T00:02:29.451665" elapsed="0.001034">Vehicle command 86483262-17ff-4287-a78f-209089ddca62 REJECTED with reason: "ECU_TIMEOUT"</status>
+</if>
+<kw name="Should Be Equal As Strings" owner="BuiltIn">
+<arg>${data['status']}</arg>
+<arg>COMPLETED</arg>
+<arg>msg=Command still pending</arg>
+<doc>Fails if objects are unequal after converting them to strings.</doc>
+<status status="NOT RUN" start="2026-09-19T00:02:29.452851" elapsed="0.000029"/>
+</kw>
+<arg>${request_id}</arg>
+<status status="FAIL" start="2026-09-19T00:02:29.444415" elapsed="0.008580">Vehicle command 86483262-17ff-4287-a78f-209089ddca62 REJECTED with reason: "ECU_TIMEOUT"</status>
+</kw>
+<kw name="Assert Command State" owner="rest_api">
+<kw name="GET On Session" owner="RequestsLibrary">
+<msg time="2026-09-19T00:02:29.959472" level="INFO">GET Request : url=http://localhost:8000/vehicle/commands/86483262-17ff-4287-a78f-209089ddca62 
+ path_url=/vehicle/commands/86483262-17ff-4287-a78f-209089ddca62 
+ headers={'User-Agent': 'python-requests/2.34.2', 'Accept-Encoding': 'gzip, deflate, zstd', 'Accept': '*/*', 'Connection': 'keep-alive', 'X-API-Key': 'dev-key-001', 'Content-Type': 'application/json'} 
+ body=None 
+ </msg>
+<msg time="2026-09-19T00:02:29.959567" level="INFO">GET Response : url=http://localhost:8000/vehicle/commands/86483262-17ff-4287-a78f-209089ddca62 
+ status=200, reason=OK 
+ headers={'date': 'Fri, 18 Sep 2026 22:02:29 GMT', 'server': 'uvicorn', 'content-length': '351', 'content-type': 'application/json'} 
+ body={"request_id":"86483262-17ff-4287-a78f-209089ddca62","command":"LOCK","params":{},"status":"FAILED","reason":"ECU_TIMEOUT","submitted_at":"2026-09-18T22:02:25.336Z","completed_at":"2026-09-18T22:02:25.961Z","elapsed_ms":605,"tcu_ack":{"request_id":"86483262-17ff-4287-a78f-209089ddca62","result":"QUEUED","queue_depth":1,"tcu_sw":"TCU_GW2_SW_4.12.0"}} 
+ </msg>
+<msg time="2026-09-19T00:02:29.959712" level="INFO">${resp} = &lt;Response [200]&gt;</msg>
+<var>${resp}</var>
+<arg>backend</arg>
+<arg>/vehicle/commands/${request_id}</arg>
+<arg>expected_status=200</arg>
+<doc>Sends a GET request on a previously created HTTP Session.</doc>
+<status status="PASS" start="2026-09-19T00:02:29.954055" elapsed="0.005694"/>
+</kw>
+<kw name="Set Variable" owner="BuiltIn">
+<msg time="2026-09-19T00:02:29.960474" level="INFO">${data} = {'request_id': '86483262-17ff-4287-a78f-209089ddca62', 'command': 'LOCK', 'params': {}, 'status': 'FAILED', 'reason': 'ECU_TIMEOUT', 'submitted_at': '2026-09-18T22:02:25.336Z', 'completed_at': '2026-0...</msg>
+<var>${data}</var>
+<arg>${resp.json()}</arg>
+<doc>Returns the given values which can then be assigned to a variable.</doc>
+<status status="PASS" start="2026-09-19T00:02:29.959934" elapsed="0.000578"/>
+</kw>
+<if>
+<branch type="IF" condition="'${data['status']}' == 'FAILED'">
+<kw name="Fail" owner="BuiltIn">
+<msg time="2026-09-19T00:02:29.961418" level="FAIL">Vehicle command 86483262-17ff-4287-a78f-209089ddca62 REJECTED with reason: "ECU_TIMEOUT"</msg>
+<arg>Vehicle command ${request_id} REJECTED with reason: "${data.get('reason')}"</arg>
+<doc>Fails the test or task with the given message and optionally alters its tags.</doc>
+<status status="FAIL" start="2026-09-19T00:02:29.960919" elapsed="0.000588">Vehicle command 86483262-17ff-4287-a78f-209089ddca62 REJECTED with reason: "ECU_TIMEOUT"</status>
+</kw>
+<status status="FAIL" start="2026-09-19T00:02:29.960613" elapsed="0.000974">Vehicle command 86483262-17ff-4287-a78f-209089ddca62 REJECTED with reason: "ECU_TIMEOUT"</status>
+</branch>
+<status status="FAIL" start="2026-09-19T00:02:29.960585" elapsed="0.001055">Vehicle command 86483262-17ff-4287-a78f-209089ddca62 REJECTED with reason: "ECU_TIMEOUT"</status>
+</if>
+<kw name="Should Be Equal As Strings" owner="BuiltIn">
+<arg>${data['status']}</arg>
+<arg>COMPLETED</arg>
+<arg>msg=Command still pending</arg>
+<doc>Fails if objects are unequal after converting them to strings.</doc>
+<status status="NOT RUN" start="2026-09-19T00:02:29.961792" elapsed="0.000028"/>
+</kw>
+<arg>${request_id}</arg>
+<status status="FAIL" start="2026-09-19T00:02:29.953603" elapsed="0.008329">Vehicle command 86483262-17ff-4287-a78f-209089ddca62 REJECTED with reason: "ECU_TIMEOUT"</status>
+</kw>
+<kw name="Assert Command State" owner="rest_api">
+<kw name="GET On Session" owner="RequestsLibrary">
+<msg time="2026-09-19T00:02:30.470113" level="INFO">GET Request : url=http://localhost:8000/vehicle/commands/86483262-17ff-4287-a78f-209089ddca62 
+ path_url=/vehicle/commands/86483262-17ff-4287-a78f-209089ddca62 
+ headers={'User-Agent': 'python-requests/2.34.2', 'Accept-Encoding': 'gzip, deflate, zstd', 'Accept': '*/*', 'Connection': 'keep-alive', 'X-API-Key': 'dev-key-001', 'Content-Type': 'application/json'} 
+ body=None 
+ </msg>
+<msg time="2026-09-19T00:02:30.470206" level="INFO">GET Response : url=http://localhost:8000/vehicle/commands/86483262-17ff-4287-a78f-209089ddca62 
+ status=200, reason=OK 
+ headers={'date': 'Fri, 18 Sep 2026 22:02:29 GMT', 'server': 'uvicorn', 'content-length': '351', 'content-type': 'application/json'} 
+ body={"request_id":"86483262-17ff-4287-a78f-209089ddca62","command":"LOCK","params":{},"status":"FAILED","reason":"ECU_TIMEOUT","submitted_at":"2026-09-18T22:02:25.336Z","completed_at":"2026-09-18T22:02:25.961Z","elapsed_ms":605,"tcu_ack":{"request_id":"86483262-17ff-4287-a78f-209089ddca62","result":"QUEUED","queue_depth":1,"tcu_sw":"TCU_GW2_SW_4.12.0"}} 
+ </msg>
+<msg time="2026-09-19T00:02:30.470380" level="INFO">${resp} = &lt;Response [200]&gt;</msg>
+<var>${resp}</var>
+<arg>backend</arg>
+<arg>/vehicle/commands/${request_id}</arg>
+<arg>expected_status=200</arg>
+<doc>Sends a GET request on a previously created HTTP Session.</doc>
+<status status="PASS" start="2026-09-19T00:02:30.464243" elapsed="0.006180"/>
+</kw>
+<kw name="Set Variable" owner="BuiltIn">
+<msg time="2026-09-19T00:02:30.471241" level="INFO">${data} = {'request_id': '86483262-17ff-4287-a78f-209089ddca62', 'command': 'LOCK', 'params': {}, 'status': 'FAILED', 'reason': 'ECU_TIMEOUT', 'submitted_at': '2026-09-18T22:02:25.336Z', 'completed_at': '2026-0...</msg>
+<var>${data}</var>
+<arg>${resp.json()}</arg>
+<doc>Returns the given values which can then be assigned to a variable.</doc>
+<status status="PASS" start="2026-09-19T00:02:30.470618" elapsed="0.000668"/>
+</kw>
+<if>
+<branch type="IF" condition="'${data['status']}' == 'FAILED'">
+<kw name="Fail" owner="BuiltIn">
+<msg time="2026-09-19T00:02:30.472223" level="FAIL">Vehicle command 86483262-17ff-4287-a78f-209089ddca62 REJECTED with reason: "ECU_TIMEOUT"</msg>
+<arg>Vehicle command ${request_id} REJECTED with reason: "${data.get('reason')}"</arg>
+<doc>Fails the test or task with the given message and optionally alters its tags.</doc>
+<status status="FAIL" start="2026-09-19T00:02:30.471741" elapsed="0.000568">Vehicle command 86483262-17ff-4287-a78f-209089ddca62 REJECTED with reason: "ECU_TIMEOUT"</status>
+</kw>
+<status status="FAIL" start="2026-09-19T00:02:30.471400" elapsed="0.000987">Vehicle command 86483262-17ff-4287-a78f-209089ddca62 REJECTED with reason: "ECU_TIMEOUT"</status>
+</branch>
+<status status="FAIL" start="2026-09-19T00:02:30.471369" elapsed="0.001064">Vehicle command 86483262-17ff-4287-a78f-209089ddca62 REJECTED with reason: "ECU_TIMEOUT"</status>
+</if>
+<kw name="Should Be Equal As Strings" owner="BuiltIn">
+<arg>${data['status']}</arg>
+<arg>COMPLETED</arg>
+<arg>msg=Command still pending</arg>
+<doc>Fails if objects are unequal after converting them to strings.</doc>
+<status status="NOT RUN" start="2026-09-19T00:02:30.472577" elapsed="0.000028"/>
+</kw>
+<arg>${request_id}</arg>
+<status status="FAIL" start="2026-09-19T00:02:30.463785" elapsed="0.008930">Vehicle command 86483262-17ff-4287-a78f-209089ddca62 REJECTED with reason: "ECU_TIMEOUT"</status>
+</kw>
+<kw name="Assert Command State" owner="rest_api">
+<kw name="GET On Session" owner="RequestsLibrary">
+<msg time="2026-09-19T00:02:30.981183" level="INFO">GET Request : url=http://localhost:8000/vehicle/commands/86483262-17ff-4287-a78f-209089ddca62 
+ path_url=/vehicle/commands/86483262-17ff-4287-a78f-209089ddca62 
+ headers={'User-Agent': 'python-requests/2.34.2', 'Accept-Encoding': 'gzip, deflate, zstd', 'Accept': '*/*', 'Connection': 'keep-alive', 'X-API-Key': 'dev-key-001', 'Content-Type': 'application/json'} 
+ body=None 
+ </msg>
+<msg time="2026-09-19T00:02:30.981284" level="INFO">GET Response : url=http://localhost:8000/vehicle/commands/86483262-17ff-4287-a78f-209089ddca62 
+ status=200, reason=OK 
+ headers={'date': 'Fri, 18 Sep 2026 22:02:30 GMT', 'server': 'uvicorn', 'content-length': '351', 'content-type': 'application/json'} 
+ body={"request_id":"86483262-17ff-4287-a78f-209089ddca62","command":"LOCK","params":{},"status":"FAILED","reason":"ECU_TIMEOUT","submitted_at":"2026-09-18T22:02:25.336Z","completed_at":"2026-09-18T22:02:25.961Z","elapsed_ms":605,"tcu_ack":{"request_id":"86483262-17ff-4287-a78f-209089ddca62","result":"QUEUED","queue_depth":1,"tcu_sw":"TCU_GW2_SW_4.12.0"}} 
+ </msg>
+<msg time="2026-09-19T00:02:30.981448" level="INFO">${resp} = &lt;Response [200]&gt;</msg>
+<var>${resp}</var>
+<arg>backend</arg>
+<arg>/vehicle/commands/${request_id}</arg>
+<arg>expected_status=200</arg>
+<doc>Sends a GET request on a previously created HTTP Session.</doc>
+<status status="PASS" start="2026-09-19T00:02:30.974811" elapsed="0.006679"/>
+</kw>
+<kw name="Set Variable" owner="BuiltIn">
+<msg time="2026-09-19T00:02:30.982280" level="INFO">${data} = {'request_id': '86483262-17ff-4287-a78f-209089ddca62', 'command': 'LOCK', 'params': {}, 'status': 'FAILED', 'reason': 'ECU_TIMEOUT', 'submitted_at': '2026-09-18T22:02:25.336Z', 'completed_at': '2026-0...</msg>
+<var>${data}</var>
+<arg>${resp.json()}</arg>
+<doc>Returns the given values which can then be assigned to a variable.</doc>
+<status status="PASS" start="2026-09-19T00:02:30.981696" elapsed="0.000621"/>
+</kw>
+<if>
+<branch type="IF" condition="'${data['status']}' == 'FAILED'">
+<kw name="Fail" owner="BuiltIn">
+<msg time="2026-09-19T00:02:30.983174" level="FAIL">Vehicle command 86483262-17ff-4287-a78f-209089ddca62 REJECTED with reason: "ECU_TIMEOUT"</msg>
+<arg>Vehicle command ${request_id} REJECTED with reason: "${data.get('reason')}"</arg>
+<doc>Fails the test or task with the given message and optionally alters its tags.</doc>
+<status status="FAIL" start="2026-09-19T00:02:30.982703" elapsed="0.000558">Vehicle command 86483262-17ff-4287-a78f-209089ddca62 REJECTED with reason: "ECU_TIMEOUT"</status>
+</kw>
+<status status="FAIL" start="2026-09-19T00:02:30.982416" elapsed="0.000924">Vehicle command 86483262-17ff-4287-a78f-209089ddca62 REJECTED with reason: "ECU_TIMEOUT"</status>
+</branch>
+<status status="FAIL" start="2026-09-19T00:02:30.982388" elapsed="0.000996">Vehicle command 86483262-17ff-4287-a78f-209089ddca62 REJECTED with reason: "ECU_TIMEOUT"</status>
+</if>
+<kw name="Should Be Equal As Strings" owner="BuiltIn">
+<arg>${data['status']}</arg>
+<arg>COMPLETED</arg>
+<arg>msg=Command still pending</arg>
+<doc>Fails if objects are unequal after converting them to strings.</doc>
+<status status="NOT RUN" start="2026-09-19T00:02:30.983539" elapsed="0.000028"/>
+</kw>
+<arg>${request_id}</arg>
+<status status="FAIL" start="2026-09-19T00:02:30.974073" elapsed="0.009613">Vehicle command 86483262-17ff-4287-a78f-209089ddca62 REJECTED with reason: "ECU_TIMEOUT"</status>
+</kw>
+<kw name="Assert Command State" owner="rest_api">
+<kw name="GET On Session" owner="RequestsLibrary">
+<msg time="2026-09-19T00:02:31.492584" level="INFO">GET Request : url=http://localhost:8000/vehicle/commands/86483262-17ff-4287-a78f-209089ddca62 
+ path_url=/vehicle/commands/86483262-17ff-4287-a78f-209089ddca62 
+ headers={'User-Agent': 'python-requests/2.34.2', 'Accept-Encoding': 'gzip, deflate, zstd', 'Accept': '*/*', 'Connection': 'keep-alive', 'X-API-Key': 'dev-key-001', 'Content-Type': 'application/json'} 
+ body=None 
+ </msg>
+<msg time="2026-09-19T00:02:31.492681" level="INFO">GET Response : url=http://localhost:8000/vehicle/commands/86483262-17ff-4287-a78f-209089ddca62 
+ status=200, reason=OK 
+ headers={'date': 'Fri, 18 Sep 2026 22:02:30 GMT', 'server': 'uvicorn', 'content-length': '351', 'content-type': 'application/json'} 
+ body={"request_id":"86483262-17ff-4287-a78f-209089ddca62","command":"LOCK","params":{},"status":"FAILED","reason":"ECU_TIMEOUT","submitted_at":"2026-09-18T22:02:25.336Z","completed_at":"2026-09-18T22:02:25.961Z","elapsed_ms":605,"tcu_ack":{"request_id":"86483262-17ff-4287-a78f-209089ddca62","result":"QUEUED","queue_depth":1,"tcu_sw":"TCU_GW2_SW_4.12.0"}} 
+ </msg>
+<msg time="2026-09-19T00:02:31.492849" level="INFO">${resp} = &lt;Response [200]&gt;</msg>
+<var>${resp}</var>
+<arg>backend</arg>
+<arg>/vehicle/commands/${request_id}</arg>
+<arg>expected_status=200</arg>
+<doc>Sends a GET request on a previously created HTTP Session.</doc>
+<status status="PASS" start="2026-09-19T00:02:31.486715" elapsed="0.006171"/>
+</kw>
+<kw name="Set Variable" owner="BuiltIn">
+<msg time="2026-09-19T00:02:31.493623" level="INFO">${data} = {'request_id': '86483262-17ff-4287-a78f-209089ddca62', 'command': 'LOCK', 'params': {}, 'status': 'FAILED', 'reason': 'ECU_TIMEOUT', 'submitted_at': '2026-09-18T22:02:25.336Z', 'completed_at': '2026-0...</msg>
+<var>${data}</var>
+<arg>${resp.json()}</arg>
+<doc>Returns the given values which can then be assigned to a variable.</doc>
+<status status="PASS" start="2026-09-19T00:02:31.493069" elapsed="0.000594"/>
+</kw>
+<if>
+<branch type="IF" condition="'${data['status']}' == 'FAILED'">
+<kw name="Fail" owner="BuiltIn">
+<msg time="2026-09-19T00:02:31.494570" level="FAIL">Vehicle command 86483262-17ff-4287-a78f-209089ddca62 REJECTED with reason: "ECU_TIMEOUT"</msg>
+<arg>Vehicle command ${request_id} REJECTED with reason: "${data.get('reason')}"</arg>
+<doc>Fails the test or task with the given message and optionally alters its tags.</doc>
+<status status="FAIL" start="2026-09-19T00:02:31.494065" elapsed="0.000615">Vehicle command 86483262-17ff-4287-a78f-209089ddca62 REJECTED with reason: "ECU_TIMEOUT"</status>
+</kw>
+<status status="FAIL" start="2026-09-19T00:02:31.493767" elapsed="0.000997">Vehicle command 86483262-17ff-4287-a78f-209089ddca62 REJECTED with reason: "ECU_TIMEOUT"</status>
+</branch>
+<status status="FAIL" start="2026-09-19T00:02:31.493738" elapsed="0.001073">Vehicle command 86483262-17ff-4287-a78f-209089ddca62 REJECTED with reason: "ECU_TIMEOUT"</status>
+</if>
+<kw name="Should Be Equal As Strings" owner="BuiltIn">
+<arg>${data['status']}</arg>
+<arg>COMPLETED</arg>
+<arg>msg=Command still pending</arg>
+<doc>Fails if objects are unequal after converting them to strings.</doc>
+<status status="NOT RUN" start="2026-09-19T00:02:31.494963" elapsed="0.000030"/>
+</kw>
+<arg>${request_id}</arg>
+<status status="FAIL" start="2026-09-19T00:02:31.486146" elapsed="0.008961">Vehicle command 86483262-17ff-4287-a78f-209089ddca62 REJECTED with reason: "ECU_TIMEOUT"</status>
+</kw>
+<kw name="Assert Command State" owner="rest_api">
+<kw name="GET On Session" owner="RequestsLibrary">
+<msg time="2026-09-19T00:02:32.002054" level="INFO">GET Request : url=http://localhost:8000/vehicle/commands/86483262-17ff-4287-a78f-209089ddca62 
+ path_url=/vehicle/commands/86483262-17ff-4287-a78f-209089ddca62 
+ headers={'User-Agent': 'python-requests/2.34.2', 'Accept-Encoding': 'gzip, deflate, zstd', 'Accept': '*/*', 'Connection': 'keep-alive', 'X-API-Key': 'dev-key-001', 'Content-Type': 'application/json'} 
+ body=None 
+ </msg>
+<msg time="2026-09-19T00:02:32.002152" level="INFO">GET Response : url=http://localhost:8000/vehicle/commands/86483262-17ff-4287-a78f-209089ddca62 
+ status=200, reason=OK 
+ headers={'date': 'Fri, 18 Sep 2026 22:02:31 GMT', 'server': 'uvicorn', 'content-length': '351', 'content-type': 'application/json'} 
+ body={"request_id":"86483262-17ff-4287-a78f-209089ddca62","command":"LOCK","params":{},"status":"FAILED","reason":"ECU_TIMEOUT","submitted_at":"2026-09-18T22:02:25.336Z","completed_at":"2026-09-18T22:02:25.961Z","elapsed_ms":605,"tcu_ack":{"request_id":"86483262-17ff-4287-a78f-209089ddca62","result":"QUEUED","queue_depth":1,"tcu_sw":"TCU_GW2_SW_4.12.0"}} 
+ </msg>
+<msg time="2026-09-19T00:02:32.002292" level="INFO">${resp} = &lt;Response [200]&gt;</msg>
+<var>${resp}</var>
+<arg>backend</arg>
+<arg>/vehicle/commands/${request_id}</arg>
+<arg>expected_status=200</arg>
+<doc>Sends a GET request on a previously created HTTP Session.</doc>
+<status status="PASS" start="2026-09-19T00:02:31.996749" elapsed="0.005577"/>
+</kw>
+<kw name="Set Variable" owner="BuiltIn">
+<msg time="2026-09-19T00:02:32.003054" level="INFO">${data} = {'request_id': '86483262-17ff-4287-a78f-209089ddca62', 'command': 'LOCK', 'params': {}, 'status': 'FAILED', 'reason': 'ECU_TIMEOUT', 'submitted_at': '2026-09-18T22:02:25.336Z', 'completed_at': '2026-0...</msg>
+<var>${data}</var>
+<arg>${resp.json()}</arg>
+<doc>Returns the given values which can then be assigned to a variable.</doc>
+<status status="PASS" start="2026-09-19T00:02:32.002514" elapsed="0.000578"/>
+</kw>
+<if>
+<branch type="IF" condition="'${data['status']}' == 'FAILED'">
+<kw name="Fail" owner="BuiltIn">
+<msg time="2026-09-19T00:02:32.003979" level="FAIL">Vehicle command 86483262-17ff-4287-a78f-209089ddca62 REJECTED with reason: "ECU_TIMEOUT"</msg>
+<arg>Vehicle command ${request_id} REJECTED with reason: "${data.get('reason')}"</arg>
+<doc>Fails the test or task with the given message and optionally alters its tags.</doc>
+<status status="FAIL" start="2026-09-19T00:02:32.003491" elapsed="0.000578">Vehicle command 86483262-17ff-4287-a78f-209089ddca62 REJECTED with reason: "ECU_TIMEOUT"</status>
+</kw>
+<status status="FAIL" start="2026-09-19T00:02:32.003195" elapsed="0.000954">Vehicle command 86483262-17ff-4287-a78f-209089ddca62 REJECTED with reason: "ECU_TIMEOUT"</status>
+</branch>
+<status status="FAIL" start="2026-09-19T00:02:32.003167" elapsed="0.001028">Vehicle command 86483262-17ff-4287-a78f-209089ddca62 REJECTED with reason: "ECU_TIMEOUT"</status>
+</if>
+<kw name="Should Be Equal As Strings" owner="BuiltIn">
+<arg>${data['status']}</arg>
+<arg>COMPLETED</arg>
+<arg>msg=Command still pending</arg>
+<doc>Fails if objects are unequal after converting them to strings.</doc>
+<status status="NOT RUN" start="2026-09-19T00:02:32.004349" elapsed="0.000029"/>
+</kw>
+<arg>${request_id}</arg>
+<status status="FAIL" start="2026-09-19T00:02:31.996284" elapsed="0.008209">Vehicle command 86483262-17ff-4287-a78f-209089ddca62 REJECTED with reason: "ECU_TIMEOUT"</status>
+</kw>
+<kw name="Assert Command State" owner="rest_api">
+<kw name="GET On Session" owner="RequestsLibrary">
+<msg time="2026-09-19T00:02:32.513554" level="INFO">GET Request : url=http://localhost:8000/vehicle/commands/86483262-17ff-4287-a78f-209089ddca62 
+ path_url=/vehicle/commands/86483262-17ff-4287-a78f-209089ddca62 
+ headers={'User-Agent': 'python-requests/2.34.2', 'Accept-Encoding': 'gzip, deflate, zstd', 'Accept': '*/*', 'Connection': 'keep-alive', 'X-API-Key': 'dev-key-001', 'Content-Type': 'application/json'} 
+ body=None 
+ </msg>
+<msg time="2026-09-19T00:02:32.513656" level="INFO">GET Response : url=http://localhost:8000/vehicle/commands/86483262-17ff-4287-a78f-209089ddca62 
+ status=200, reason=OK 
+ headers={'date': 'Fri, 18 Sep 2026 22:02:31 GMT', 'server': 'uvicorn', 'content-length': '351', 'content-type': 'application/json'} 
+ body={"request_id":"86483262-17ff-4287-a78f-209089ddca62","command":"LOCK","params":{},"status":"FAILED","reason":"ECU_TIMEOUT","submitted_at":"2026-09-18T22:02:25.336Z","completed_at":"2026-09-18T22:02:25.961Z","elapsed_ms":605,"tcu_ack":{"request_id":"86483262-17ff-4287-a78f-209089ddca62","result":"QUEUED","queue_depth":1,"tcu_sw":"TCU_GW2_SW_4.12.0"}} 
+ </msg>
+<msg time="2026-09-19T00:02:32.513841" level="INFO">${resp} = &lt;Response [200]&gt;</msg>
+<var>${resp}</var>
+<arg>backend</arg>
+<arg>/vehicle/commands/${request_id}</arg>
+<arg>expected_status=200</arg>
+<doc>Sends a GET request on a previously created HTTP Session.</doc>
+<status status="PASS" start="2026-09-19T00:02:32.506732" elapsed="0.007144"/>
+</kw>
+<kw name="Set Variable" owner="BuiltIn">
+<msg time="2026-09-19T00:02:32.514580" level="INFO">${data} = {'request_id': '86483262-17ff-4287-a78f-209089ddca62', 'command': 'LOCK', 'params': {}, 'status': 'FAILED', 'reason': 'ECU_TIMEOUT', 'submitted_at': '2026-09-18T22:02:25.336Z', 'completed_at': '2026-0...</msg>
+<var>${data}</var>
+<arg>${resp.json()}</arg>
+<doc>Returns the given values which can then be assigned to a variable.</doc>
+<status status="PASS" start="2026-09-19T00:02:32.514051" elapsed="0.000566"/>
+</kw>
+<if>
+<branch type="IF" condition="'${data['status']}' == 'FAILED'">
+<kw name="Fail" owner="BuiltIn">
+<msg time="2026-09-19T00:02:32.515472" level="FAIL">Vehicle command 86483262-17ff-4287-a78f-209089ddca62 REJECTED with reason: "ECU_TIMEOUT"</msg>
+<arg>Vehicle command ${request_id} REJECTED with reason: "${data.get('reason')}"</arg>
+<doc>Fails the test or task with the given message and optionally alters its tags.</doc>
+<status status="FAIL" start="2026-09-19T00:02:32.514997" elapsed="0.000561">Vehicle command 86483262-17ff-4287-a78f-209089ddca62 REJECTED with reason: "ECU_TIMEOUT"</status>
+</kw>
+<status status="FAIL" start="2026-09-19T00:02:32.514713" elapsed="0.000929">Vehicle command 86483262-17ff-4287-a78f-209089ddca62 REJECTED with reason: "ECU_TIMEOUT"</status>
+</branch>
+<status status="FAIL" start="2026-09-19T00:02:32.514687" elapsed="0.001003">Vehicle command 86483262-17ff-4287-a78f-209089ddca62 REJECTED with reason: "ECU_TIMEOUT"</status>
+</if>
+<kw name="Should Be Equal As Strings" owner="BuiltIn">
+<arg>${data['status']}</arg>
+<arg>COMPLETED</arg>
+<arg>msg=Command still pending</arg>
+<doc>Fails if objects are unequal after converting them to strings.</doc>
+<status status="NOT RUN" start="2026-09-19T00:02:32.515841" elapsed="0.000027"/>
+</kw>
+<arg>${request_id}</arg>
+<status status="FAIL" start="2026-09-19T00:02:32.506075" elapsed="0.009905">Vehicle command 86483262-17ff-4287-a78f-209089ddca62 REJECTED with reason: "ECU_TIMEOUT"</status>
+</kw>
+<kw name="Assert Command State" owner="rest_api">
+<kw name="GET On Session" owner="RequestsLibrary">
+<msg time="2026-09-19T00:02:33.027249" level="INFO">GET Request : url=http://localhost:8000/vehicle/commands/86483262-17ff-4287-a78f-209089ddca62 
+ path_url=/vehicle/commands/86483262-17ff-4287-a78f-209089ddca62 
+ headers={'User-Agent': 'python-requests/2.34.2', 'Accept-Encoding': 'gzip, deflate, zstd', 'Accept': '*/*', 'Connection': 'keep-alive', 'X-API-Key': 'dev-key-001', 'Content-Type': 'application/json'} 
+ body=None 
+ </msg>
+<msg time="2026-09-19T00:02:33.027339" level="INFO">GET Response : url=http://localhost:8000/vehicle/commands/86483262-17ff-4287-a78f-209089ddca62 
+ status=200, reason=OK 
+ headers={'date': 'Fri, 18 Sep 2026 22:02:32 GMT', 'server': 'uvicorn', 'content-length': '351', 'content-type': 'application/json'} 
+ body={"request_id":"86483262-17ff-4287-a78f-209089ddca62","command":"LOCK","params":{},"status":"FAILED","reason":"ECU_TIMEOUT","submitted_at":"2026-09-18T22:02:25.336Z","completed_at":"2026-09-18T22:02:25.961Z","elapsed_ms":605,"tcu_ack":{"request_id":"86483262-17ff-4287-a78f-209089ddca62","result":"QUEUED","queue_depth":1,"tcu_sw":"TCU_GW2_SW_4.12.0"}} 
+ </msg>
+<msg time="2026-09-19T00:02:33.027494" level="INFO">${resp} = &lt;Response [200]&gt;</msg>
+<var>${resp}</var>
+<arg>backend</arg>
+<arg>/vehicle/commands/${request_id}</arg>
+<arg>expected_status=200</arg>
+<doc>Sends a GET request on a previously created HTTP Session.</doc>
+<status status="PASS" start="2026-09-19T00:02:33.017426" elapsed="0.010103"/>
+</kw>
+<kw name="Set Variable" owner="BuiltIn">
+<msg time="2026-09-19T00:02:33.028229" level="INFO">${data} = {'request_id': '86483262-17ff-4287-a78f-209089ddca62', 'command': 'LOCK', 'params': {}, 'status': 'FAILED', 'reason': 'ECU_TIMEOUT', 'submitted_at': '2026-09-18T22:02:25.336Z', 'completed_at': '2026-0...</msg>
+<var>${data}</var>
+<arg>${resp.json()}</arg>
+<doc>Returns the given values which can then be assigned to a variable.</doc>
+<status status="PASS" start="2026-09-19T00:02:33.027707" elapsed="0.000559"/>
+</kw>
+<if>
+<branch type="IF" condition="'${data['status']}' == 'FAILED'">
+<kw name="Fail" owner="BuiltIn">
+<msg time="2026-09-19T00:02:33.029135" level="FAIL">Vehicle command 86483262-17ff-4287-a78f-209089ddca62 REJECTED with reason: "ECU_TIMEOUT"</msg>
+<arg>Vehicle command ${request_id} REJECTED with reason: "${data.get('reason')}"</arg>
+<doc>Fails the test or task with the given message and optionally alters its tags.</doc>
+<status status="FAIL" start="2026-09-19T00:02:33.028659" elapsed="0.000561">Vehicle command 86483262-17ff-4287-a78f-209089ddca62 REJECTED with reason: "ECU_TIMEOUT"</status>
+</kw>
+<status status="FAIL" start="2026-09-19T00:02:33.028366" elapsed="0.000939">Vehicle command 86483262-17ff-4287-a78f-209089ddca62 REJECTED with reason: "ECU_TIMEOUT"</status>
+</branch>
+<status status="FAIL" start="2026-09-19T00:02:33.028338" elapsed="0.001013">Vehicle command 86483262-17ff-4287-a78f-209089ddca62 REJECTED with reason: "ECU_TIMEOUT"</status>
+</if>
+<kw name="Should Be Equal As Strings" owner="BuiltIn">
+<arg>${data['status']}</arg>
+<arg>COMPLETED</arg>
+<arg>msg=Command still pending</arg>
+<doc>Fails if objects are unequal after converting them to strings.</doc>
+<status status="NOT RUN" start="2026-09-19T00:02:33.029503" elapsed="0.000033"/>
+</kw>
+<arg>${request_id}</arg>
+<status status="FAIL" start="2026-09-19T00:02:33.016854" elapsed="0.012801">Vehicle command 86483262-17ff-4287-a78f-209089ddca62 REJECTED with reason: "ECU_TIMEOUT"</status>
+</kw>
+<kw name="Assert Command State" owner="rest_api">
+<kw name="GET On Session" owner="RequestsLibrary">
+<msg time="2026-09-19T00:02:33.535678" level="INFO">GET Request : url=http://localhost:8000/vehicle/commands/86483262-17ff-4287-a78f-209089ddca62 
+ path_url=/vehicle/commands/86483262-17ff-4287-a78f-209089ddca62 
+ headers={'User-Agent': 'python-requests/2.34.2', 'Accept-Encoding': 'gzip, deflate, zstd', 'Accept': '*/*', 'Connection': 'keep-alive', 'X-API-Key': 'dev-key-001', 'Content-Type': 'application/json'} 
+ body=None 
+ </msg>
+<msg time="2026-09-19T00:02:33.535790" level="INFO">GET Response : url=http://localhost:8000/vehicle/commands/86483262-17ff-4287-a78f-209089ddca62 
+ status=200, reason=OK 
+ headers={'date': 'Fri, 18 Sep 2026 22:02:32 GMT', 'server': 'uvicorn', 'content-length': '351', 'content-type': 'application/json'} 
+ body={"request_id":"86483262-17ff-4287-a78f-209089ddca62","command":"LOCK","params":{},"status":"FAILED","reason":"ECU_TIMEOUT","submitted_at":"2026-09-18T22:02:25.336Z","completed_at":"2026-09-18T22:02:25.961Z","elapsed_ms":605,"tcu_ack":{"request_id":"86483262-17ff-4287-a78f-209089ddca62","result":"QUEUED","queue_depth":1,"tcu_sw":"TCU_GW2_SW_4.12.0"}} 
+ </msg>
+<msg time="2026-09-19T00:02:33.535929" level="INFO">${resp} = &lt;Response [200]&gt;</msg>
+<var>${resp}</var>
+<arg>backend</arg>
+<arg>/vehicle/commands/${request_id}</arg>
+<arg>expected_status=200</arg>
+<doc>Sends a GET request on a previously created HTTP Session.</doc>
+<status status="PASS" start="2026-09-19T00:02:33.530856" elapsed="0.005108"/>
+</kw>
+<kw name="Set Variable" owner="BuiltIn">
+<msg time="2026-09-19T00:02:33.536631" level="INFO">${data} = {'request_id': '86483262-17ff-4287-a78f-209089ddca62', 'command': 'LOCK', 'params': {}, 'status': 'FAILED', 'reason': 'ECU_TIMEOUT', 'submitted_at': '2026-09-18T22:02:25.336Z', 'completed_at': '2026-0...</msg>
+<var>${data}</var>
+<arg>${resp.json()}</arg>
+<doc>Returns the given values which can then be assigned to a variable.</doc>
+<status status="PASS" start="2026-09-19T00:02:33.536150" elapsed="0.000515"/>
+</kw>
+<if>
+<branch type="IF" condition="'${data['status']}' == 'FAILED'">
+<kw name="Fail" owner="BuiltIn">
+<msg time="2026-09-19T00:02:33.537452" level="FAIL">Vehicle command 86483262-17ff-4287-a78f-209089ddca62 REJECTED with reason: "ECU_TIMEOUT"</msg>
+<arg>Vehicle command ${request_id} REJECTED with reason: "${data.get('reason')}"</arg>
+<doc>Fails the test or task with the given message and optionally alters its tags.</doc>
+<status status="FAIL" start="2026-09-19T00:02:33.537018" elapsed="0.000514">Vehicle command 86483262-17ff-4287-a78f-209089ddca62 REJECTED with reason: "ECU_TIMEOUT"</status>
+</kw>
+<status status="FAIL" start="2026-09-19T00:02:33.536755" elapsed="0.000846">Vehicle command 86483262-17ff-4287-a78f-209089ddca62 REJECTED with reason: "ECU_TIMEOUT"</status>
+</branch>
+<status status="FAIL" start="2026-09-19T00:02:33.536730" elapsed="0.000911">Vehicle command 86483262-17ff-4287-a78f-209089ddca62 REJECTED with reason: "ECU_TIMEOUT"</status>
+</if>
+<kw name="Should Be Equal As Strings" owner="BuiltIn">
+<arg>${data['status']}</arg>
+<arg>COMPLETED</arg>
+<arg>msg=Command still pending</arg>
+<doc>Fails if objects are unequal after converting them to strings.</doc>
+<status status="NOT RUN" start="2026-09-19T00:02:33.537775" elapsed="0.000025"/>
+</kw>
+<arg>${request_id}</arg>
+<status status="FAIL" start="2026-09-19T00:02:33.530481" elapsed="0.007421">Vehicle command 86483262-17ff-4287-a78f-209089ddca62 REJECTED with reason: "ECU_TIMEOUT"</status>
+</kw>
+<kw name="Assert Command State" owner="rest_api">
+<kw name="GET On Session" owner="RequestsLibrary">
+<msg time="2026-09-19T00:02:34.045099" level="INFO">GET Request : url=http://localhost:8000/vehicle/commands/86483262-17ff-4287-a78f-209089ddca62 
+ path_url=/vehicle/commands/86483262-17ff-4287-a78f-209089ddca62 
+ headers={'User-Agent': 'python-requests/2.34.2', 'Accept-Encoding': 'gzip, deflate, zstd', 'Accept': '*/*', 'Connection': 'keep-alive', 'X-API-Key': 'dev-key-001', 'Content-Type': 'application/json'} 
+ body=None 
+ </msg>
+<msg time="2026-09-19T00:02:34.045190" level="INFO">GET Response : url=http://localhost:8000/vehicle/commands/86483262-17ff-4287-a78f-209089ddca62 
+ status=200, reason=OK 
+ headers={'date': 'Fri, 18 Sep 2026 22:02:33 GMT', 'server': 'uvicorn', 'content-length': '351', 'content-type': 'application/json'} 
+ body={"request_id":"86483262-17ff-4287-a78f-209089ddca62","command":"LOCK","params":{},"status":"FAILED","reason":"ECU_TIMEOUT","submitted_at":"2026-09-18T22:02:25.336Z","completed_at":"2026-09-18T22:02:25.961Z","elapsed_ms":605,"tcu_ack":{"request_id":"86483262-17ff-4287-a78f-209089ddca62","result":"QUEUED","queue_depth":1,"tcu_sw":"TCU_GW2_SW_4.12.0"}} 
+ </msg>
+<msg time="2026-09-19T00:02:34.045347" level="INFO">${resp} = &lt;Response [200]&gt;</msg>
+<var>${resp}</var>
+<arg>backend</arg>
+<arg>/vehicle/commands/${request_id}</arg>
+<arg>expected_status=200</arg>
+<doc>Sends a GET request on a previously created HTTP Session.</doc>
+<status status="PASS" start="2026-09-19T00:02:34.039016" elapsed="0.006366"/>
+</kw>
+<kw name="Set Variable" owner="BuiltIn">
+<msg time="2026-09-19T00:02:34.046086" level="INFO">${data} = {'request_id': '86483262-17ff-4287-a78f-209089ddca62', 'command': 'LOCK', 'params': {}, 'status': 'FAILED', 'reason': 'ECU_TIMEOUT', 'submitted_at': '2026-09-18T22:02:25.336Z', 'completed_at': '2026-0...</msg>
+<var>${data}</var>
+<arg>${resp.json()}</arg>
+<doc>Returns the given values which can then be assigned to a variable.</doc>
+<status status="PASS" start="2026-09-19T00:02:34.045560" elapsed="0.000564"/>
+</kw>
+<if>
+<branch type="IF" condition="'${data['status']}' == 'FAILED'">
+<kw name="Fail" owner="BuiltIn">
+<msg time="2026-09-19T00:02:34.046985" level="FAIL">Vehicle command 86483262-17ff-4287-a78f-209089ddca62 REJECTED with reason: "ECU_TIMEOUT"</msg>
+<arg>Vehicle command ${request_id} REJECTED with reason: "${data.get('reason')}"</arg>
+<doc>Fails the test or task with the given message and optionally alters its tags.</doc>
+<status status="FAIL" start="2026-09-19T00:02:34.046509" elapsed="0.000561">Vehicle command 86483262-17ff-4287-a78f-209089ddca62 REJECTED with reason: "ECU_TIMEOUT"</status>
+</kw>
+<status status="FAIL" start="2026-09-19T00:02:34.046222" elapsed="0.000928">Vehicle command 86483262-17ff-4287-a78f-209089ddca62 REJECTED with reason: "ECU_TIMEOUT"</status>
+</branch>
+<status status="FAIL" start="2026-09-19T00:02:34.046194" elapsed="0.001001">Vehicle command 86483262-17ff-4287-a78f-209089ddca62 REJECTED with reason: "ECU_TIMEOUT"</status>
+</if>
+<kw name="Should Be Equal As Strings" owner="BuiltIn">
+<arg>${data['status']}</arg>
+<arg>COMPLETED</arg>
+<arg>msg=Command still pending</arg>
+<doc>Fails if objects are unequal after converting them to strings.</doc>
+<status status="NOT RUN" start="2026-09-19T00:02:34.047341" elapsed="0.000027"/>
+</kw>
+<arg>${request_id}</arg>
+<status status="FAIL" start="2026-09-19T00:02:34.038434" elapsed="0.009046">Vehicle command 86483262-17ff-4287-a78f-209089ddca62 REJECTED with reason: "ECU_TIMEOUT"</status>
+</kw>
+<kw name="Assert Command State" owner="rest_api">
+<kw name="GET On Session" owner="RequestsLibrary">
+<msg time="2026-09-19T00:02:34.554488" level="INFO">GET Request : url=http://localhost:8000/vehicle/commands/86483262-17ff-4287-a78f-209089ddca62 
+ path_url=/vehicle/commands/86483262-17ff-4287-a78f-209089ddca62 
+ headers={'User-Agent': 'python-requests/2.34.2', 'Accept-Encoding': 'gzip, deflate, zstd', 'Accept': '*/*', 'Connection': 'keep-alive', 'X-API-Key': 'dev-key-001', 'Content-Type': 'application/json'} 
+ body=None 
+ </msg>
+<msg time="2026-09-19T00:02:34.554580" level="INFO">GET Response : url=http://localhost:8000/vehicle/commands/86483262-17ff-4287-a78f-209089ddca62 
+ status=200, reason=OK 
+ headers={'date': 'Fri, 18 Sep 2026 22:02:33 GMT', 'server': 'uvicorn', 'content-length': '351', 'content-type': 'application/json'} 
+ body={"request_id":"86483262-17ff-4287-a78f-209089ddca62","command":"LOCK","params":{},"status":"FAILED","reason":"ECU_TIMEOUT","submitted_at":"2026-09-18T22:02:25.336Z","completed_at":"2026-09-18T22:02:25.961Z","elapsed_ms":605,"tcu_ack":{"request_id":"86483262-17ff-4287-a78f-209089ddca62","result":"QUEUED","queue_depth":1,"tcu_sw":"TCU_GW2_SW_4.12.0"}} 
+ </msg>
+<msg time="2026-09-19T00:02:34.554731" level="INFO">${resp} = &lt;Response [200]&gt;</msg>
+<var>${resp}</var>
+<arg>backend</arg>
+<arg>/vehicle/commands/${request_id}</arg>
+<arg>expected_status=200</arg>
+<doc>Sends a GET request on a previously created HTTP Session.</doc>
+<status status="PASS" start="2026-09-19T00:02:34.548590" elapsed="0.006176"/>
+</kw>
+<kw name="Set Variable" owner="BuiltIn">
+<msg time="2026-09-19T00:02:34.555483" level="INFO">${data} = {'request_id': '86483262-17ff-4287-a78f-209089ddca62', 'command': 'LOCK', 'params': {}, 'status': 'FAILED', 'reason': 'ECU_TIMEOUT', 'submitted_at': '2026-09-18T22:02:25.336Z', 'completed_at': '2026-0...</msg>
+<var>${data}</var>
+<arg>${resp.json()}</arg>
+<doc>Returns the given values which can then be assigned to a variable.</doc>
+<status status="PASS" start="2026-09-19T00:02:34.554945" elapsed="0.000576"/>
+</kw>
+<if>
+<branch type="IF" condition="'${data['status']}' == 'FAILED'">
+<kw name="Fail" owner="BuiltIn">
+<msg time="2026-09-19T00:02:34.556688" level="FAIL">Vehicle command 86483262-17ff-4287-a78f-209089ddca62 REJECTED with reason: "ECU_TIMEOUT"</msg>
+<arg>Vehicle command ${request_id} REJECTED with reason: "${data.get('reason')}"</arg>
+<doc>Fails the test or task with the given message and optionally alters its tags.</doc>
+<status status="FAIL" start="2026-09-19T00:02:34.556074" elapsed="0.000710">Vehicle command 86483262-17ff-4287-a78f-209089ddca62 REJECTED with reason: "ECU_TIMEOUT"</status>
+</kw>
+<status status="FAIL" start="2026-09-19T00:02:34.555621" elapsed="0.001249">Vehicle command 86483262-17ff-4287-a78f-209089ddca62 REJECTED with reason: "ECU_TIMEOUT"</status>
+</branch>
+<status status="FAIL" start="2026-09-19T00:02:34.555594" elapsed="0.001322">Vehicle command 86483262-17ff-4287-a78f-209089ddca62 REJECTED with reason: "ECU_TIMEOUT"</status>
+</if>
+<kw name="Should Be Equal As Strings" owner="BuiltIn">
+<arg>${data['status']}</arg>
+<arg>COMPLETED</arg>
+<arg>msg=Command still pending</arg>
+<doc>Fails if objects are unequal after converting them to strings.</doc>
+<status status="NOT RUN" start="2026-09-19T00:02:34.557076" elapsed="0.000035"/>
+</kw>
+<arg>${request_id}</arg>
+<status status="FAIL" start="2026-09-19T00:02:34.548150" elapsed="0.009077">Vehicle command 86483262-17ff-4287-a78f-209089ddca62 REJECTED with reason: "ECU_TIMEOUT"</status>
+</kw>
+<kw name="Assert Command State" owner="rest_api">
+<kw name="GET On Session" owner="RequestsLibrary">
+<msg time="2026-09-19T00:02:35.062993" level="INFO">GET Request : url=http://localhost:8000/vehicle/commands/86483262-17ff-4287-a78f-209089ddca62 
+ path_url=/vehicle/commands/86483262-17ff-4287-a78f-209089ddca62 
+ headers={'User-Agent': 'python-requests/2.34.2', 'Accept-Encoding': 'gzip, deflate, zstd', 'Accept': '*/*', 'Connection': 'keep-alive', 'X-API-Key': 'dev-key-001', 'Content-Type': 'application/json'} 
+ body=None 
+ </msg>
+<msg time="2026-09-19T00:02:35.063080" level="INFO">GET Response : url=http://localhost:8000/vehicle/commands/86483262-17ff-4287-a78f-209089ddca62 
+ status=200, reason=OK 
+ headers={'date': 'Fri, 18 Sep 2026 22:02:34 GMT', 'server': 'uvicorn', 'content-length': '351', 'content-type': 'application/json'} 
+ body={"request_id":"86483262-17ff-4287-a78f-209089ddca62","command":"LOCK","params":{},"status":"FAILED","reason":"ECU_TIMEOUT","submitted_at":"2026-09-18T22:02:25.336Z","completed_at":"2026-09-18T22:02:25.961Z","elapsed_ms":605,"tcu_ack":{"request_id":"86483262-17ff-4287-a78f-209089ddca62","result":"QUEUED","queue_depth":1,"tcu_sw":"TCU_GW2_SW_4.12.0"}} 
+ </msg>
+<msg time="2026-09-19T00:02:35.063215" level="INFO">${resp} = &lt;Response [200]&gt;</msg>
+<var>${resp}</var>
+<arg>backend</arg>
+<arg>/vehicle/commands/${request_id}</arg>
+<arg>expected_status=200</arg>
+<doc>Sends a GET request on a previously created HTTP Session.</doc>
+<status status="PASS" start="2026-09-19T00:02:35.058116" elapsed="0.005133"/>
+</kw>
+<kw name="Set Variable" owner="BuiltIn">
+<msg time="2026-09-19T00:02:35.063933" level="INFO">${data} = {'request_id': '86483262-17ff-4287-a78f-209089ddca62', 'command': 'LOCK', 'params': {}, 'status': 'FAILED', 'reason': 'ECU_TIMEOUT', 'submitted_at': '2026-09-18T22:02:25.336Z', 'completed_at': '2026-0...</msg>
+<var>${data}</var>
+<arg>${resp.json()}</arg>
+<doc>Returns the given values which can then be assigned to a variable.</doc>
+<status status="PASS" start="2026-09-19T00:02:35.063424" elapsed="0.000545"/>
+</kw>
+<if>
+<branch type="IF" condition="'${data['status']}' == 'FAILED'">
+<kw name="Fail" owner="BuiltIn">
+<msg time="2026-09-19T00:02:35.064822" level="FAIL">Vehicle command 86483262-17ff-4287-a78f-209089ddca62 REJECTED with reason: "ECU_TIMEOUT"</msg>
+<arg>Vehicle command ${request_id} REJECTED with reason: "${data.get('reason')}"</arg>
+<doc>Fails the test or task with the given message and optionally alters its tags.</doc>
+<status status="FAIL" start="2026-09-19T00:02:35.064358" elapsed="0.000574">Vehicle command 86483262-17ff-4287-a78f-209089ddca62 REJECTED with reason: "ECU_TIMEOUT"</status>
+</kw>
+<status status="FAIL" start="2026-09-19T00:02:35.064067" elapsed="0.000944">Vehicle command 86483262-17ff-4287-a78f-209089ddca62 REJECTED with reason: "ECU_TIMEOUT"</status>
+</branch>
+<status status="FAIL" start="2026-09-19T00:02:35.064040" elapsed="0.001015">Vehicle command 86483262-17ff-4287-a78f-209089ddca62 REJECTED with reason: "ECU_TIMEOUT"</status>
+</if>
+<kw name="Should Be Equal As Strings" owner="BuiltIn">
+<arg>${data['status']}</arg>
+<arg>COMPLETED</arg>
+<arg>msg=Command still pending</arg>
+<doc>Fails if objects are unequal after converting them to strings.</doc>
+<status status="NOT RUN" start="2026-09-19T00:02:35.065199" elapsed="0.000028"/>
+</kw>
+<arg>${request_id}</arg>
+<status status="FAIL" start="2026-09-19T00:02:35.057721" elapsed="0.007615">Vehicle command 86483262-17ff-4287-a78f-209089ddca62 REJECTED with reason: "ECU_TIMEOUT"</status>
+</kw>
+<kw name="Assert Command State" owner="rest_api">
+<kw name="GET On Session" owner="RequestsLibrary">
+<msg time="2026-09-19T00:02:35.572904" level="INFO">GET Request : url=http://localhost:8000/vehicle/commands/86483262-17ff-4287-a78f-209089ddca62 
+ path_url=/vehicle/commands/86483262-17ff-4287-a78f-209089ddca62 
+ headers={'User-Agent': 'python-requests/2.34.2', 'Accept-Encoding': 'gzip, deflate, zstd', 'Accept': '*/*', 'Connection': 'keep-alive', 'X-API-Key': 'dev-key-001', 'Content-Type': 'application/json'} 
+ body=None 
+ </msg>
+<msg time="2026-09-19T00:02:35.573003" level="INFO">GET Response : url=http://localhost:8000/vehicle/commands/86483262-17ff-4287-a78f-209089ddca62 
+ status=200, reason=OK 
+ headers={'date': 'Fri, 18 Sep 2026 22:02:34 GMT', 'server': 'uvicorn', 'content-length': '351', 'content-type': 'application/json'} 
+ body={"request_id":"86483262-17ff-4287-a78f-209089ddca62","command":"LOCK","params":{},"status":"FAILED","reason":"ECU_TIMEOUT","submitted_at":"2026-09-18T22:02:25.336Z","completed_at":"2026-09-18T22:02:25.961Z","elapsed_ms":605,"tcu_ack":{"request_id":"86483262-17ff-4287-a78f-209089ddca62","result":"QUEUED","queue_depth":1,"tcu_sw":"TCU_GW2_SW_4.12.0"}} 
+ </msg>
+<msg time="2026-09-19T00:02:35.573160" level="INFO">${resp} = &lt;Response [200]&gt;</msg>
+<var>${resp}</var>
+<arg>backend</arg>
+<arg>/vehicle/commands/${request_id}</arg>
+<arg>expected_status=200</arg>
+<doc>Sends a GET request on a previously created HTTP Session.</doc>
+<status status="PASS" start="2026-09-19T00:02:35.566632" elapsed="0.006570"/>
+</kw>
+<kw name="Set Variable" owner="BuiltIn">
+<msg time="2026-09-19T00:02:35.574026" level="INFO">${data} = {'request_id': '86483262-17ff-4287-a78f-209089ddca62', 'command': 'LOCK', 'params': {}, 'status': 'FAILED', 'reason': 'ECU_TIMEOUT', 'submitted_at': '2026-09-18T22:02:25.336Z', 'completed_at': '2026-0...</msg>
+<var>${data}</var>
+<arg>${resp.json()}</arg>
+<doc>Returns the given values which can then be assigned to a variable.</doc>
+<status status="PASS" start="2026-09-19T00:02:35.573418" elapsed="0.000661"/>
+</kw>
+<if>
+<branch type="IF" condition="'${data['status']}' == 'FAILED'">
+<kw name="Fail" owner="BuiltIn">
+<msg time="2026-09-19T00:02:35.575131" level="FAIL">Vehicle command 86483262-17ff-4287-a78f-209089ddca62 REJECTED with reason: "ECU_TIMEOUT"</msg>
+<arg>Vehicle command ${request_id} REJECTED with reason: "${data.get('reason')}"</arg>
+<doc>Fails the test or task with the given message and optionally alters its tags.</doc>
+<status status="FAIL" start="2026-09-19T00:02:35.574557" elapsed="0.000662">Vehicle command 86483262-17ff-4287-a78f-209089ddca62 REJECTED with reason: "ECU_TIMEOUT"</status>
+</kw>
+<status status="FAIL" start="2026-09-19T00:02:35.574198" elapsed="0.001100">Vehicle command 86483262-17ff-4287-a78f-209089ddca62 REJECTED with reason: "ECU_TIMEOUT"</status>
+</branch>
+<status status="FAIL" start="2026-09-19T00:02:35.574165" elapsed="0.001178">Vehicle command 86483262-17ff-4287-a78f-209089ddca62 REJECTED with reason: "ECU_TIMEOUT"</status>
+</if>
+<kw name="Should Be Equal As Strings" owner="BuiltIn">
+<arg>${data['status']}</arg>
+<arg>COMPLETED</arg>
+<arg>msg=Command still pending</arg>
+<doc>Fails if objects are unequal after converting them to strings.</doc>
+<status status="NOT RUN" start="2026-09-19T00:02:35.575490" elapsed="0.000029"/>
+</kw>
+<arg>${request_id}</arg>
+<status status="FAIL" start="2026-09-19T00:02:35.566042" elapsed="0.009587">Vehicle command 86483262-17ff-4287-a78f-209089ddca62 REJECTED with reason: "ECU_TIMEOUT"</status>
+</kw>
+<msg time="2026-09-19T00:02:35.575736" level="FAIL">Keyword 'Assert Command State' failed after retrying for 10 seconds. The last error was: Vehicle command 86483262-17ff-4287-a78f-209089ddca62 REJECTED with reason: "ECU_TIMEOUT"</msg>
+<arg>${timeout}</arg>
+<arg>500ms</arg>
+<arg>Assert Command State</arg>
+<arg>${request_id}</arg>
+<doc>Runs the specified keyword and retries if it fails.</doc>
+<status status="FAIL" start="2026-09-19T00:02:25.360867" elapsed="10.215005">Keyword 'Assert Command State' failed after retrying for 10 seconds. The last error was: Vehicle command 86483262-17ff-4287-a78f-209089ddca62 REJECTED with reason: "ECU_TIMEOUT"</status>
+</kw>
+<arg>${req_id}</arg>
+<status status="FAIL" start="2026-09-19T00:02:25.360507" elapsed="10.215482">Keyword 'Assert Command State' failed after retrying for 10 seconds. The last error was: Vehicle command 86483262-17ff-4287-a78f-209089ddca62 REJECTED with reason: "ECU_TIMEOUT"</status>
+</kw>
+<kw name="Get Vehicle Status" owner="rest_api">
+<var>${status}</var>
+<doc>Fetches current telemetry from /vehicle/status.</doc>
+<status status="NOT RUN" start="2026-09-19T00:02:35.576270" elapsed="0.000045"/>
+</kw>
+<kw name="Should Be True" owner="BuiltIn">
+<arg>${status['doors']['locked']}</arg>
+<doc>Fails if the given condition is not true.</doc>
+<status status="NOT RUN" start="2026-09-19T00:02:35.576523" elapsed="0.000029"/>
+</kw>
+<doc>Issues lock command and checks terminal state.</doc>
+<status status="FAIL" start="2026-09-19T00:02:25.282788" elapsed="10.293973">Keyword 'Assert Command State' failed after retrying for 10 seconds. The last error was: Vehicle command 86483262-17ff-4287-a78f-209089ddca62 REJECTED with reason: "ECU_TIMEOUT"</status>
+</test>
+<kw name="Close Vehicle Session" owner="rest_api" type="TEARDOWN">
+<kw name="Delete All Sessions" owner="RequestsLibrary">
+<msg time="2026-09-19T00:02:35.577679" level="INFO">Deleting All Sessions</msg>
+<doc>Removes all the session objects </doc>
+<status status="PASS" start="2026-09-19T00:02:35.577591" elapsed="0.000179"/>
+</kw>
+<doc>Tears down all open HTTP sessions.</doc>
+<status status="PASS" start="2026-09-19T00:02:35.577385" elapsed="0.000451"/>
+</kw>
+<doc>Scenario S01: Central door lock and unlock duty cycle verification.</doc>
+<status status="FAIL" start="2026-09-19T00:02:25.077153" elapsed="10.500721"/>
+</suite>
+<statistics>
+<total>
+<stat pass="0" fail="1" skip="0">All Tests</stat>
+</total>
+<tag>
+</tag>
+<suite>
+<stat name="S01 Lock Unlock" id="s1" pass="0" fail="1" skip="0">S01 Lock Unlock</stat>
+</suite>
+</statistics>
+<errors>
+</errors>
+</robot>

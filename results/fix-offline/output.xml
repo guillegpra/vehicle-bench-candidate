@@ -1,0 +1,283 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<robot generator="Robot 7.5 (Python 3.14.7 on darwin)" generated="2026-09-19T14:32:00.524897" rpa="false" schemaversion="5">
+<suite id="s1" name="Assertions" source="/Users/guillegarciapradales/Developer/vehicle-bench-candidate-20260916/starter/robot/checks/assertions.robot">
+<test id="s1-t1" name="Realistic VHAL Snapshot Matches" line="5">
+<kw name="Assert Gateway VHAL Charging State" owner="adb">
+<kw name="Adb Shell">
+<msg time="2026-09-19T14:32:00.660187" level="WARN">Keyword 'adb.Assert Gateway VHAL Charging State' called keyword 'Adb Shell' that exists both in the same resource file as the caller and in the suite file using that resource. The keyword in the suite file is used now, but this will change in Robot Framework 8.0.</msg>
+<return>
+<value>VHAL property snapshot (vendor.oem.vhal@2.0)\n${SPACE}${SPACE}last_sync: 2026-09-19T12:22:25.921Z${SPACE}${SPACE}seq: 3${SPACE}${SPACE}body_ecu_online: True\n${SPACE}${SPACE}Property: 0x11400F0F (EV_CHARGE_STATE${SPACE}${SPACE}${SPACE}${SPACE}${SPACE}${SPACE}${SPACE}${SPACE} ) value=CHARGING\n${SPACE}${SPACE}Property: 0x11400F10 (EV_CHARGE_TARGET${SPACE}${SPACE}${SPACE}${SPACE}${SPACE}${SPACE}${SPACE}${SPACE}) value=80\n${SPACE}${SPACE}Property: 0x11600309 (EV_BATTERY_LEVEL${SPACE}${SPACE}${SPACE}${SPACE}${SPACE}${SPACE}${SPACE}${SPACE}) value=44</value>
+<status status="PASS" start="2026-09-19T14:32:00.661901" elapsed="0.000543"/>
+</return>
+<msg time="2026-09-19T14:32:00.663708" level="INFO">${dumpsys} = VHAL property snapshot (vendor.oem.vhal@2.0)
+  last_sync: 2026-09-19T12:22:25.921Z  seq: 3  body_ecu_online: True
+  Property: 0x11400F0F (EV_CHARGE_STATE         ) value=CHARGING
+  Property: 0x11400F1...</msg>
+<var>${dumpsys}</var>
+<arg>dumpsys vehicle</arg>
+<status status="PASS" start="2026-09-19T14:32:00.660655" elapsed="0.003345"/>
+</kw>
+<kw name="Should Match Regexp" owner="BuiltIn">
+<arg>${dumpsys}</arg>
+<arg>(?m)^\\s*Property:\\s+0x11400F0F\\s+\\(EV_CHARGE_STATE\\s+\\)\\s+value=${expected_state}\\s*$</arg>
+<doc>Fails if the `string` does not match the regular expression `pattern`.</doc>
+<status status="PASS" start="2026-09-19T14:32:00.664718" elapsed="0.001521"/>
+</kw>
+<arg>CHARGING</arg>
+<status status="PASS" start="2026-09-19T14:32:00.658814" elapsed="0.008038"/>
+</kw>
+<kw name="Assert Gateway VHAL Charging Target" owner="adb">
+<kw name="Adb Shell">
+<msg time="2026-09-19T14:32:00.668167" level="WARN">Keyword 'adb.Assert Gateway VHAL Charging Target' called keyword 'Adb Shell' that exists both in the same resource file as the caller and in the suite file using that resource. The keyword in the suite file is used now, but this will change in Robot Framework 8.0.</msg>
+<return>
+<value>VHAL property snapshot (vendor.oem.vhal@2.0)\n${SPACE}${SPACE}last_sync: 2026-09-19T12:22:25.921Z${SPACE}${SPACE}seq: 3${SPACE}${SPACE}body_ecu_online: True\n${SPACE}${SPACE}Property: 0x11400F0F (EV_CHARGE_STATE${SPACE}${SPACE}${SPACE}${SPACE}${SPACE}${SPACE}${SPACE}${SPACE} ) value=CHARGING\n${SPACE}${SPACE}Property: 0x11400F10 (EV_CHARGE_TARGET${SPACE}${SPACE}${SPACE}${SPACE}${SPACE}${SPACE}${SPACE}${SPACE}) value=80\n${SPACE}${SPACE}Property: 0x11600309 (EV_BATTERY_LEVEL${SPACE}${SPACE}${SPACE}${SPACE}${SPACE}${SPACE}${SPACE}${SPACE}) value=44</value>
+<status status="PASS" start="2026-09-19T14:32:00.669389" elapsed="0.000287"/>
+</return>
+<msg time="2026-09-19T14:32:00.670617" level="INFO">${dumpsys} = VHAL property snapshot (vendor.oem.vhal@2.0)
+  last_sync: 2026-09-19T12:22:25.921Z  seq: 3  body_ecu_online: True
+  Property: 0x11400F0F (EV_CHARGE_STATE         ) value=CHARGING
+  Property: 0x11400F1...</msg>
+<var>${dumpsys}</var>
+<arg>dumpsys vehicle</arg>
+<status status="PASS" start="2026-09-19T14:32:00.668588" elapsed="0.002298"/>
+</kw>
+<kw name="Should Match Regexp" owner="BuiltIn">
+<arg>${dumpsys}</arg>
+<arg>(?m)^\\s*Property:\\s+0x11400F10\\s+\\(EV_CHARGE_TARGET\\s+\\)\\s+value=${expected_target}\\s*$</arg>
+<doc>Fails if the `string` does not match the regular expression `pattern`.</doc>
+<status status="PASS" start="2026-09-19T14:32:00.671311" elapsed="0.001298"/>
+</kw>
+<arg>80</arg>
+<status status="PASS" start="2026-09-19T14:32:00.667347" elapsed="0.005789"/>
+</kw>
+<kw name="Assert Gateway VHAL Charging SOC" owner="adb">
+<kw name="Adb Shell">
+<msg time="2026-09-19T14:32:00.674193" level="WARN">Keyword 'adb.Assert Gateway VHAL Charging SOC' called keyword 'Adb Shell' that exists both in the same resource file as the caller and in the suite file using that resource. The keyword in the suite file is used now, but this will change in Robot Framework 8.0.</msg>
+<return>
+<value>VHAL property snapshot (vendor.oem.vhal@2.0)\n${SPACE}${SPACE}last_sync: 2026-09-19T12:22:25.921Z${SPACE}${SPACE}seq: 3${SPACE}${SPACE}body_ecu_online: True\n${SPACE}${SPACE}Property: 0x11400F0F (EV_CHARGE_STATE${SPACE}${SPACE}${SPACE}${SPACE}${SPACE}${SPACE}${SPACE}${SPACE} ) value=CHARGING\n${SPACE}${SPACE}Property: 0x11400F10 (EV_CHARGE_TARGET${SPACE}${SPACE}${SPACE}${SPACE}${SPACE}${SPACE}${SPACE}${SPACE}) value=80\n${SPACE}${SPACE}Property: 0x11600309 (EV_BATTERY_LEVEL${SPACE}${SPACE}${SPACE}${SPACE}${SPACE}${SPACE}${SPACE}${SPACE}) value=44</value>
+<status status="PASS" start="2026-09-19T14:32:00.675360" elapsed="0.000516"/>
+</return>
+<msg time="2026-09-19T14:32:00.676976" level="INFO">${dumpsys} = VHAL property snapshot (vendor.oem.vhal@2.0)
+  last_sync: 2026-09-19T12:22:25.921Z  seq: 3  body_ecu_online: True
+  Property: 0x11400F0F (EV_CHARGE_STATE         ) value=CHARGING
+  Property: 0x11400F1...</msg>
+<var>${dumpsys}</var>
+<arg>dumpsys vehicle</arg>
+<status status="PASS" start="2026-09-19T14:32:00.674492" elapsed="0.002885"/>
+</kw>
+<kw name="Should Match Regexp" owner="BuiltIn">
+<arg>${dumpsys}</arg>
+<arg>(?m)^\\s*Property:\\s+0x11600309\\s+\\(EV_BATTERY_LEVEL\\s+\\)\\s+value=${expected_soc}\\s*$</arg>
+<doc>Fails if the `string` does not match the regular expression `pattern`.</doc>
+<status status="PASS" start="2026-09-19T14:32:00.677809" elapsed="0.001406"/>
+</kw>
+<arg>44</arg>
+<status status="PASS" start="2026-09-19T14:32:00.673495" elapsed="0.006265"/>
+</kw>
+<kw name="Assert Gateway Charging State" owner="adb">
+<kw name="Adb Shell">
+<msg time="2026-09-19T14:32:00.681032" level="WARN">Keyword 'adb.Assert Gateway Charging State' called keyword 'Adb Shell' that exists both in the same resource file as the caller and in the suite file using that resource. The keyword in the suite file is used now, but this will change in Robot Framework 8.0.</msg>
+<return>
+<value>VHAL property snapshot (vendor.oem.vhal@2.0)\n${SPACE}${SPACE}last_sync: 2026-09-19T12:22:25.921Z${SPACE}${SPACE}seq: 3${SPACE}${SPACE}body_ecu_online: True\n${SPACE}${SPACE}Property: 0x11400F0F (EV_CHARGE_STATE${SPACE}${SPACE}${SPACE}${SPACE}${SPACE}${SPACE}${SPACE}${SPACE} ) value=CHARGING\n${SPACE}${SPACE}Property: 0x11400F10 (EV_CHARGE_TARGET${SPACE}${SPACE}${SPACE}${SPACE}${SPACE}${SPACE}${SPACE}${SPACE}) value=80\n${SPACE}${SPACE}Property: 0x11600309 (EV_BATTERY_LEVEL${SPACE}${SPACE}${SPACE}${SPACE}${SPACE}${SPACE}${SPACE}${SPACE}) value=44</value>
+<status status="PASS" start="2026-09-19T14:32:00.682504" elapsed="0.000316"/>
+</return>
+<msg time="2026-09-19T14:32:00.684115" level="INFO">${dumpsys} = VHAL property snapshot (vendor.oem.vhal@2.0)
+  last_sync: 2026-09-19T12:22:25.921Z  seq: 3  body_ecu_online: True
+  Property: 0x11400F0F (EV_CHARGE_STATE         ) value=CHARGING
+  Property: 0x11400F1...</msg>
+<var>${dumpsys}</var>
+<arg>dumpsys vehicle</arg>
+<status status="PASS" start="2026-09-19T14:32:00.681448" elapsed="0.002978"/>
+</kw>
+<kw name="Should Match Regexp" owner="BuiltIn">
+<arg>${dumpsys}</arg>
+<arg>(?m)^\\s*Property:\\s+0x11400F0F\\s+\\(EV_CHARGE_STATE\\s+\\)\\s+value=${expected_state}\\s*$</arg>
+<doc>Fails if the `string` does not match the regular expression `pattern`.</doc>
+<status status="PASS" start="2026-09-19T14:32:00.684843" elapsed="0.001132"/>
+</kw>
+<if>
+<branch type="IF" condition="$expected_target is not None">
+<kw name="Should Match Regexp" owner="BuiltIn">
+<arg>${dumpsys}</arg>
+<arg>(?m)^\\s*Property:\\s+0x11400F10\\s+\\(EV_CHARGE_TARGET\\s+\\)\\s+value=${expected_target}\\s*$</arg>
+<doc>Fails if the `string` does not match the regular expression `pattern`.</doc>
+<status status="PASS" start="2026-09-19T14:32:00.687060" elapsed="0.001069"/>
+</kw>
+<status status="PASS" start="2026-09-19T14:32:00.686543" elapsed="0.001858"/>
+</branch>
+<status status="PASS" start="2026-09-19T14:32:00.686279" elapsed="0.002383"/>
+</if>
+<if>
+<branch type="IF" condition="$expected_soc is not None">
+<kw name="Should Match Regexp" owner="BuiltIn">
+<arg>${dumpsys}</arg>
+<arg>(?m)^\\s*Property:\\s+0x11600309\\s+\\(EV_BATTERY_LEVEL\\s+\\)\\s+value=${expected_soc}\\s*$</arg>
+<doc>Fails if the `string` does not match the regular expression `pattern`.</doc>
+<status status="PASS" start="2026-09-19T14:32:00.689624" elapsed="0.001027"/>
+</kw>
+<status status="PASS" start="2026-09-19T14:32:00.689184" elapsed="0.001729"/>
+</branch>
+<status status="PASS" start="2026-09-19T14:32:00.688937" elapsed="0.002237"/>
+</if>
+<arg>CHARGING</arg>
+<arg>80</arg>
+<arg>44</arg>
+<status status="PASS" start="2026-09-19T14:32:00.680236" elapsed="0.011445"/>
+</kw>
+<kw name="Assert Body ECU Online" owner="adb">
+<kw name="Adb Shell">
+<msg time="2026-09-19T14:32:00.692870" level="WARN">Keyword 'adb.Assert Body ECU Online' called keyword 'Adb Shell' that exists both in the same resource file as the caller and in the suite file using that resource. The keyword in the suite file is used now, but this will change in Robot Framework 8.0.</msg>
+<return>
+<value>VHAL property snapshot (vendor.oem.vhal@2.0)\n${SPACE}${SPACE}last_sync: 2026-09-19T12:22:25.921Z${SPACE}${SPACE}seq: 3${SPACE}${SPACE}body_ecu_online: True\n${SPACE}${SPACE}Property: 0x11400F0F (EV_CHARGE_STATE${SPACE}${SPACE}${SPACE}${SPACE}${SPACE}${SPACE}${SPACE}${SPACE} ) value=CHARGING\n${SPACE}${SPACE}Property: 0x11400F10 (EV_CHARGE_TARGET${SPACE}${SPACE}${SPACE}${SPACE}${SPACE}${SPACE}${SPACE}${SPACE}) value=80\n${SPACE}${SPACE}Property: 0x11600309 (EV_BATTERY_LEVEL${SPACE}${SPACE}${SPACE}${SPACE}${SPACE}${SPACE}${SPACE}${SPACE}) value=44</value>
+<status status="PASS" start="2026-09-19T14:32:00.694079" elapsed="0.000275"/>
+</return>
+<msg time="2026-09-19T14:32:00.695412" level="INFO">${dumpsys} = VHAL property snapshot (vendor.oem.vhal@2.0)
+  last_sync: 2026-09-19T12:22:25.921Z  seq: 3  body_ecu_online: True
+  Property: 0x11400F0F (EV_CHARGE_STATE         ) value=CHARGING
+  Property: 0x11400F1...</msg>
+<var>${dumpsys}</var>
+<arg>dumpsys vehicle</arg>
+<status status="PASS" start="2026-09-19T14:32:00.693278" elapsed="0.002401"/>
+</kw>
+<kw name="Should Match Regexp" owner="BuiltIn">
+<arg>${dumpsys}</arg>
+<arg>(?m)^\\s*last_sync:.*body_ecu_online:\\s*True\\s*$</arg>
+<doc>Fails if the `string` does not match the regular expression `pattern`.</doc>
+<status status="PASS" start="2026-09-19T14:32:00.696186" elapsed="0.001179"/>
+</kw>
+<status status="PASS" start="2026-09-19T14:32:00.692106" elapsed="0.005778"/>
+</kw>
+<kw name="Run Keyword And Expect Error" owner="BuiltIn">
+<kw name="Assert Gateway Charging State" owner="adb">
+<kw name="Adb Shell">
+<msg time="2026-09-19T14:32:00.699937" level="WARN">Keyword 'adb.Assert Gateway Charging State' called keyword 'Adb Shell' that exists both in the same resource file as the caller and in the suite file using that resource. The keyword in the suite file is used now, but this will change in Robot Framework 8.0.</msg>
+<return>
+<value>VHAL property snapshot (vendor.oem.vhal@2.0)\n${SPACE}${SPACE}last_sync: 2026-09-19T12:22:25.921Z${SPACE}${SPACE}seq: 3${SPACE}${SPACE}body_ecu_online: True\n${SPACE}${SPACE}Property: 0x11400F0F (EV_CHARGE_STATE${SPACE}${SPACE}${SPACE}${SPACE}${SPACE}${SPACE}${SPACE}${SPACE} ) value=CHARGING\n${SPACE}${SPACE}Property: 0x11400F10 (EV_CHARGE_TARGET${SPACE}${SPACE}${SPACE}${SPACE}${SPACE}${SPACE}${SPACE}${SPACE}) value=80\n${SPACE}${SPACE}Property: 0x11600309 (EV_BATTERY_LEVEL${SPACE}${SPACE}${SPACE}${SPACE}${SPACE}${SPACE}${SPACE}${SPACE}) value=44</value>
+<status status="PASS" start="2026-09-19T14:32:00.701073" elapsed="0.000302"/>
+</return>
+<msg time="2026-09-19T14:32:00.702628" level="INFO">${dumpsys} = VHAL property snapshot (vendor.oem.vhal@2.0)
+  last_sync: 2026-09-19T12:22:25.921Z  seq: 3  body_ecu_online: True
+  Property: 0x11400F0F (EV_CHARGE_STATE         ) value=CHARGING
+  Property: 0x11400F1...</msg>
+<var>${dumpsys}</var>
+<arg>dumpsys vehicle</arg>
+<status status="PASS" start="2026-09-19T14:32:00.700237" elapsed="0.002660"/>
+</kw>
+<kw name="Should Match Regexp" owner="BuiltIn">
+<msg time="2026-09-19T14:32:00.704599" level="FAIL">'VHAL property snapshot (vendor.oem.vhal@2.0)
+  last_sync: 2026-09-19T12:22:25.921Z  seq: 3  body_ecu_online: True
+  Property: 0x11400F0F (EV_CHARGE_STATE         ) value=CHARGING
+  Property: 0x11400F10 (EV_CHARGE_TARGET        ) value=80
+  Property: 0x11600309 (EV_BATTERY_LEVEL        ) value=44' does not match '(?m)^\s*Property:\s+0x11400F0F\s+\(EV_CHARGE_STATE\s+\)\s+value=IDLE\s*$'</msg>
+<arg>${dumpsys}</arg>
+<arg>(?m)^\\s*Property:\\s+0x11400F0F\\s+\\(EV_CHARGE_STATE\\s+\\)\\s+value=${expected_state}\\s*$</arg>
+<doc>Fails if the `string` does not match the regular expression `pattern`.</doc>
+<status status="FAIL" start="2026-09-19T14:32:00.703421" elapsed="0.001913">'VHAL property snapshot (vendor.oem.vhal@2.0)
+  last_sync: 2026-09-19T12:22:25.921Z  seq: 3  body_ecu_online: True
+  Property: 0x11400F0F (EV_CHARGE_STATE         ) value=CHARGING
+  Property: 0x11400F10 (EV_CHARGE_TARGET        ) value=80
+  Property: 0x11600309 (EV_BATTERY_LEVEL        ) value=44' does not match '(?m)^\s*Property:\s+0x11400F0F\s+\(EV_CHARGE_STATE\s+\)\s+value=IDLE\s*$'</status>
+</kw>
+<if>
+<branch type="IF" condition="$expected_target is not None">
+<kw name="Should Match Regexp" owner="BuiltIn">
+<arg>${dumpsys}</arg>
+<arg>(?m)^\\s*Property:\\s+0x11400F10\\s+\\(EV_CHARGE_TARGET\\s+\\)\\s+value=${expected_target}\\s*$</arg>
+<doc>Fails if the `string` does not match the regular expression `pattern`.</doc>
+<status status="NOT RUN" start="2026-09-19T14:32:00.706307" elapsed="0.000330"/>
+</kw>
+<status status="NOT RUN" start="2026-09-19T14:32:00.705928" elapsed="0.001008"/>
+</branch>
+<status status="NOT RUN" start="2026-09-19T14:32:00.705676" elapsed="0.001575"/>
+</if>
+<if>
+<branch type="IF" condition="$expected_soc is not None">
+<kw name="Should Match Regexp" owner="BuiltIn">
+<arg>${dumpsys}</arg>
+<arg>(?m)^\\s*Property:\\s+0x11600309\\s+\\(EV_BATTERY_LEVEL\\s+\\)\\s+value=${expected_soc}\\s*$</arg>
+<doc>Fails if the `string` does not match the regular expression `pattern`.</doc>
+<status status="NOT RUN" start="2026-09-19T14:32:00.708427" elapsed="0.000266"/>
+</kw>
+<status status="NOT RUN" start="2026-09-19T14:32:00.707939" elapsed="0.001026"/>
+</branch>
+<status status="NOT RUN" start="2026-09-19T14:32:00.707619" elapsed="0.001613"/>
+</if>
+<arg>IDLE</arg>
+<status status="FAIL" start="2026-09-19T14:32:00.699196" elapsed="0.010552">'VHAL property snapshot (vendor.oem.vhal@2.0)
+  last_sync: 2026-09-19T12:22:25.921Z  seq: 3  body_ecu_online: True
+  Property: 0x11400F0F (EV_CHARGE_STATE         ) value=CHARGING
+  Property: 0x11400F10 (EV_CHARGE_TARGET        ) value=80
+  Property: 0x11600309 (EV_BATTERY_LEVEL        ) value=44' does not match '(?m)^\s*Property:\s+0x11400F0F\s+\(EV_CHARGE_STATE\s+\)\s+value=IDLE\s*$'</status>
+</kw>
+<arg>*does not match*</arg>
+<arg>Assert Gateway Charging State</arg>
+<arg>IDLE</arg>
+<doc>Runs the keyword and checks that the expected error occurred.</doc>
+<status status="PASS" start="2026-09-19T14:32:00.698255" elapsed="0.012322"/>
+</kw>
+<kw name="Run Keyword And Expect Error" owner="BuiltIn">
+<kw name="Assert Body ECU Offline" owner="adb">
+<kw name="Adb Shell">
+<msg time="2026-09-19T14:32:00.713739" level="WARN">Keyword 'adb.Assert Body ECU Offline' called keyword 'Adb Shell' that exists both in the same resource file as the caller and in the suite file using that resource. The keyword in the suite file is used now, but this will change in Robot Framework 8.0.</msg>
+<return>
+<value>VHAL property snapshot (vendor.oem.vhal@2.0)\n${SPACE}${SPACE}last_sync: 2026-09-19T12:22:25.921Z${SPACE}${SPACE}seq: 3${SPACE}${SPACE}body_ecu_online: True\n${SPACE}${SPACE}Property: 0x11400F0F (EV_CHARGE_STATE${SPACE}${SPACE}${SPACE}${SPACE}${SPACE}${SPACE}${SPACE}${SPACE} ) value=CHARGING\n${SPACE}${SPACE}Property: 0x11400F10 (EV_CHARGE_TARGET${SPACE}${SPACE}${SPACE}${SPACE}${SPACE}${SPACE}${SPACE}${SPACE}) value=80\n${SPACE}${SPACE}Property: 0x11600309 (EV_BATTERY_LEVEL${SPACE}${SPACE}${SPACE}${SPACE}${SPACE}${SPACE}${SPACE}${SPACE}) value=44</value>
+<status status="PASS" start="2026-09-19T14:32:00.714898" elapsed="0.000317"/>
+</return>
+<msg time="2026-09-19T14:32:00.716138" level="INFO">${dumpsys} = VHAL property snapshot (vendor.oem.vhal@2.0)
+  last_sync: 2026-09-19T12:22:25.921Z  seq: 3  body_ecu_online: True
+  Property: 0x11400F0F (EV_CHARGE_STATE         ) value=CHARGING
+  Property: 0x11400F1...</msg>
+<var>${dumpsys}</var>
+<arg>dumpsys vehicle</arg>
+<status status="PASS" start="2026-09-19T14:32:00.714080" elapsed="0.002317"/>
+</kw>
+<kw name="Should Match Regexp" owner="BuiltIn">
+<msg time="2026-09-19T14:32:00.717827" level="FAIL">'VHAL property snapshot (vendor.oem.vhal@2.0)
+  last_sync: 2026-09-19T12:22:25.921Z  seq: 3  body_ecu_online: True
+  Property: 0x11400F0F (EV_CHARGE_STATE         ) value=CHARGING
+  Property: 0x11400F10 (EV_CHARGE_TARGET        ) value=80
+  Property: 0x11600309 (EV_BATTERY_LEVEL        ) value=44' does not match '(?m)^\s*last_sync:.*body_ecu_online:\s*False\s*$'</msg>
+<arg>${dumpsys}</arg>
+<arg>(?m)^\\s*last_sync:.*body_ecu_online:\\s*False\\s*$</arg>
+<doc>Fails if the `string` does not match the regular expression `pattern`.</doc>
+<status status="FAIL" start="2026-09-19T14:32:00.716814" elapsed="0.001578">'VHAL property snapshot (vendor.oem.vhal@2.0)
+  last_sync: 2026-09-19T12:22:25.921Z  seq: 3  body_ecu_online: True
+  Property: 0x11400F0F (EV_CHARGE_STATE         ) value=CHARGING
+  Property: 0x11400F10 (EV_CHARGE_TARGET        ) value=80
+  Property: 0x11600309 (EV_BATTERY_LEVEL        ) value=44' does not match '(?m)^\s*last_sync:.*body_ecu_online:\s*False\s*$'</status>
+</kw>
+<status status="FAIL" start="2026-09-19T14:32:00.713039" elapsed="0.005690">'VHAL property snapshot (vendor.oem.vhal@2.0)
+  last_sync: 2026-09-19T12:22:25.921Z  seq: 3  body_ecu_online: True
+  Property: 0x11400F0F (EV_CHARGE_STATE         ) value=CHARGING
+  Property: 0x11400F10 (EV_CHARGE_TARGET        ) value=80
+  Property: 0x11600309 (EV_BATTERY_LEVEL        ) value=44' does not match '(?m)^\s*last_sync:.*body_ecu_online:\s*False\s*$'</status>
+</kw>
+<arg>*does not match*</arg>
+<arg>Assert Body ECU Offline</arg>
+<doc>Runs the keyword and checks that the expected error occurred.</doc>
+<status status="PASS" start="2026-09-19T14:32:00.711060" elapsed="0.008234"/>
+</kw>
+<status status="PASS" start="2026-09-19T14:32:00.657380" elapsed="0.062251"/>
+</test>
+<status status="PASS" start="2026-09-19T14:32:00.526765" elapsed="0.193439"/>
+</suite>
+<statistics>
+<total>
+<stat pass="1" fail="0" skip="0">All Tests</stat>
+</total>
+<tag>
+</tag>
+<suite>
+<stat name="Assertions" id="s1" pass="1" fail="0" skip="0">Assertions</stat>
+</suite>
+</statistics>
+<errors>
+<msg time="2026-09-19T14:32:00.660187" level="WARN">Keyword 'adb.Assert Gateway VHAL Charging State' called keyword 'Adb Shell' that exists both in the same resource file as the caller and in the suite file using that resource. The keyword in the suite file is used now, but this will change in Robot Framework 8.0.</msg>
+<msg time="2026-09-19T14:32:00.668167" level="WARN">Keyword 'adb.Assert Gateway VHAL Charging Target' called keyword 'Adb Shell' that exists both in the same resource file as the caller and in the suite file using that resource. The keyword in the suite file is used now, but this will change in Robot Framework 8.0.</msg>
+<msg time="2026-09-19T14:32:00.674193" level="WARN">Keyword 'adb.Assert Gateway VHAL Charging SOC' called keyword 'Adb Shell' that exists both in the same resource file as the caller and in the suite file using that resource. The keyword in the suite file is used now, but this will change in Robot Framework 8.0.</msg>
+<msg time="2026-09-19T14:32:00.681032" level="WARN">Keyword 'adb.Assert Gateway Charging State' called keyword 'Adb Shell' that exists both in the same resource file as the caller and in the suite file using that resource. The keyword in the suite file is used now, but this will change in Robot Framework 8.0.</msg>
+<msg time="2026-09-19T14:32:00.692870" level="WARN">Keyword 'adb.Assert Body ECU Online' called keyword 'Adb Shell' that exists both in the same resource file as the caller and in the suite file using that resource. The keyword in the suite file is used now, but this will change in Robot Framework 8.0.</msg>
+<msg time="2026-09-19T14:32:00.699937" level="WARN">Keyword 'adb.Assert Gateway Charging State' called keyword 'Adb Shell' that exists both in the same resource file as the caller and in the suite file using that resource. The keyword in the suite file is used now, but this will change in Robot Framework 8.0.</msg>
+<msg time="2026-09-19T14:32:00.713739" level="WARN">Keyword 'adb.Assert Body ECU Offline' called keyword 'Adb Shell' that exists both in the same resource file as the caller and in the suite file using that resource. The keyword in the suite file is used now, but this will change in Robot Framework 8.0.</msg>
+</errors>
+</robot>
